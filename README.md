@@ -2,7 +2,7 @@
 
 ### Tech Stack
 - React (Vite) – Frontend
-- Python (Flask/FastAPI) – Backend 
+- Python (Flask) – Backend 
 - Machine Learning & Deep Learning
 - Clinical Data & MRI Imaging
 
