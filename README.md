@@ -8,8 +8,8 @@
 
 ### Project Structure
 - frontend/ – React UI
-- backend/ – API (to be added)
-- models/ – ML/DL models (to be added)
-
+- backend/ – Flask API endpoints,
+           - models/ – ML/DL models,
+           - fusion algorithm
 ### Status
 In Progress
