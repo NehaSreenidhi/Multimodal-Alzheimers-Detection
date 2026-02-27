@@ -1,0 +1,221 @@
+/* ================= PAGE BASE ================= */
+body {
+  background-color: #f1f5f9;
+  margin: 0 auto; 
+}
+
+.diagnosis-container {
+  width: 100%;
+  max-width: 1500px;
+  margin: 0 auto;                 /* CENTER PAGE */
+  padding: 40px 60px;
+  font-family: "Inter", system-ui, sans-serif;
+  color: #0f172a;
+}
+
+/* ================= HEADER ================= */
+.progress-header {
+  display: flex;
+  justify-content: space-between;
+  font-size: 15px;
+  font-weight: 500;
+  color: #475569;
+  margin-bottom: 14px;
+}
+
+/* ================= PROGRESS BAR ================= */
+.progress-wrapper {
+  width: 100%;
+  max-width: 1400px;              /* SAME AS CARD */
+  margin: 0 auto 32px auto;       /* CENTER */
+}
+
+.progress-bar {
+  width: 100%;
+  height: 14px;
+  background-color: #e2e8f0;
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #2563eb, #0ea5a4);
+  transition: width 0.4s ease;
+}
+
+/* ================= MAIN CARD ================= */
+.card {
+  width: 100%;
+  max-width: 1400px;              /* SAME AS PROGRESS */
+  margin: 0 auto;                 /* CENTER */
+  background-color: #ffffff;
+  padding: 36px 56px;
+  border-radius: 18px;
+  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.08);
+}
+
+/* ================= HEADINGS ================= */
+.card h3 {
+  font-size: 19px;
+  font-weight: 600;
+  margin-bottom: 14px;
+  margin-top: 28px;
+  text-align: center;
+}
+
+.card h3:first-child {
+  margin-top: 0;
+}
+
+.subtitle {
+  font-size: 14px;
+  color: #64748b;
+  margin-bottom: 24px;
+  text-align: center;
+}
+
+/* ================= STEP 1 – MRI UPLOAD ================= */
+.upload-box {
+  width: 70%;
+  height: 240px;
+  margin: 0 auto;                 /* CENTER INSIDE CARD */
+  border: 2px dashed #93c5fd;
+  border-radius: 18px;
+  background-color: #eff6ff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 28px;
+  cursor: pointer;
+  transition: border-color 0.3s ease, background 0.3s ease;
+}
+
+.upload-box:hover {
+  border-color: #2563eb;
+  background-color: #e0f2fe;
+}
+
+.upload-box p {
+  font-size: 16px;
+  color: #2563eb;
+  font-weight: 600;
+}
+
+.upload-box img {
+  max-height: 150px;
+}
+
+.mri-preview {
+  max-height: 190px;
+  border-radius: 14px;
+}
+
+/* ================= CONTINUE BUTTON ================= */
+.continue-btn {
+  margin: 32px auto 0 auto;       /* CENTER */
+  padding: 15px 30px;
+  border-radius: 14px;
+  border: none;
+  background-color: #cbd5e1;
+  color: #475569;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: not-allowed;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.continue-btn.active {
+  background: linear-gradient(90deg, #2563eb, #0ea5a4);
+  color: #ffffff;
+  cursor: pointer;
+}
+
+/* ================= CONTINUE ICON ================= */
+.continue-icon {
+  width: 20px;
+  height: 20px;
+  transition: transform 0.25s ease;
+}
+
+.continue-btn.active:hover .continue-icon {
+  transform: translateX(6px);
+}
+
+/* ================= STEP 2 – FORM GRID ================= */
+.grid {
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto 32px auto;       /* CENTER */
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+/* ================= FORM FIELDS ================= */
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.field label {
+  font-size: 13px;
+  font-weight: 500;
+  color: #475569;
+}
+
+.field input,
+.field select {
+  height: 52px;
+  padding: 0 16px;
+  font-size: 15px;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+  background-color: #f8fafc;
+  color: #0f172a;
+}
+
+.field input::placeholder {
+  color: #94a3b8;
+}
+
+.field input:focus,
+.field select:focus {
+  outline: none;
+  border-color: #2563eb;
+  background-color: #ffffff;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+}
+
+/* ================= FOOTER BUTTONS ================= */
+.footer-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 18px;
+  margin-top: 32px;
+}
+
+.back-btn {
+  padding: 12px 22px;
+  background-color: #e2e8f0;
+  border: none;
+  border-radius: 12px;
+  color: #334155;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.generate-btn {
+  padding: 14px 30px;
+  background: linear-gradient(90deg, #2563eb, #0ea5a4);
+  border: none;
+  border-radius: 12px;
+  color: #ffffff;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+}
