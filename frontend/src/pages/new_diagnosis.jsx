@@ -69,7 +69,6 @@ export default function NewDiagnosis() {
       {step === 1 && (
         <div className="card">
           <h3>Upload Brain MRI</h3>
-          <p className="subtitle">T1-weighted MRI scan</p>
 
           <label className="upload-box">
             {preview ? (
