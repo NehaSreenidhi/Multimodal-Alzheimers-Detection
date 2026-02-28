@@ -3,8 +3,11 @@ import uploadIcon from "../assets/upload.svg";
 import arrowRight from "../assets/arrow-right.svg";
 import "../styles/new_diagnosis.css";
 import { predictDiagnosis } from "../services/api";
+import { useNavigate } from "react-router-dom";
 
 export default function NewDiagnosis() {
+  const navigate = useNavigate();
+
   const [step, setStep] = useState(1);
   const [mriFile, setMriFile] = useState(null);
   const [preview, setPreview] = useState(null);
@@ -42,9 +45,16 @@ export default function NewDiagnosis() {
       payload.append("data", JSON.stringify(formData));
 
       const result = await predictDiagnosis(payload);
-      console.log("Diagnosis result:", result);
+
+      console.log("Result:", result);
+      // alert(result.predicted_class);
+      // Redirect to DiagnosisResult page with prediction
+      navigate("/diagnosis_result", {
+        state: { prediction: result.predicted_class },
+      });
+
     } catch (error) {
-      console.error("Prediction failed:", error);
+      alert("Prediction failed");
     }
   };
 
@@ -152,3 +162,4 @@ function Select({ label, value, onChange }) {
     </div>
   );
 }
+

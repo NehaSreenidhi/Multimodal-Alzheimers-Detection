@@ -12,13 +12,15 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./pages/home";
 import NewDiagnosis from "./pages/new_diagnosis";
+import DiagnosisResult from "./pages/DiagnosisResult";
 
 function App() {
   return (
     <Router>
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/new_diagnosis" element={<NewDiagnosis />} /> {/* route for new page */}
+        <Route path="/new_diagnosis" element={<NewDiagnosis />} /> 
+        <Route path="/diagnosis_result" element={<DiagnosisResult />} />
       </Routes>
     </Router>
   );
