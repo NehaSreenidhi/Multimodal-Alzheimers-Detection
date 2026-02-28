@@ -1,0 +1,425 @@
+/* ================= PAGE ================= */
+.result-page {
+  min-height: 100vh;
+  background: #f4f6fb;
+  display: flex;
+  justify-content: center;
+  padding: 40px 20px;
+  font-family: "Inter", system-ui, sans-serif;
+}
+
+/* ================= MAIN CARD ================= */
+.result-card {
+  width: 100%;
+  max-width: 1100px;
+  background: #ffffff;
+  border-radius: 20px;
+  padding: 36px 40px;
+  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.08);
+}
+
+/* ================= HEADER ================= */
+.top-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 28px;
+}
+
+.top-header h1 {
+  font-size: 28px;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.date-text {
+  font-size: 14px;
+  color: #64748b;
+  margin-top: 6px;
+}
+
+/* ================= HEADER BUTTONS ================= */
+.top-actions {
+  display: flex;
+  gap: 14px;
+}
+
+.primary-btn {
+  background: linear-gradient(90deg, #4f46e5, #6366f1);
+  color: #ffffff;
+  border: none;
+  padding: 12px 22px;
+  border-radius: 12px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.secondary-btn {
+  background: #e5e7eb;
+  color: #111827;
+  border: none;
+  padding: 12px 22px;
+  border-radius: 12px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* ================= SUMMARY CARD ================= */
+.final-summary-card {
+  display: flex;
+  gap: 18px;
+  align-items: center;
+  background: #f8fafc;
+  padding: 24px;
+  border-radius: 16px;
+  margin-bottom: 32px;
+}
+
+.summary-icon {
+  width: 60px;
+  height: 60px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 26px;
+}
+
+.summary-text h3 {
+  font-size: 20px;
+  font-weight: 700;
+  color: #000000;
+}
+
+.summary-text p {
+  font-size: 15px;
+  color: #334155;
+  margin-top: 3px;
+}
+
+/* ================= METRICS CARD ================= */
+.metrics-card {
+  background: #ffffff;
+  border-radius: 18px;
+  padding: 28px 30px;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.06);
+}
+
+/* ================= METRICS HEADER ================= */
+.metrics-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 26px;
+}
+
+.metrics-header h2 {
+  font-size: 20px;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.metrics-header p {
+  font-size: 14px;
+  color: #64748b;
+  margin-top: 4px;
+}
+
+.metrics-badge {
+  background: #eef2ff;
+  color: #4f46e5;
+  padding: 8px 16px;
+  border-radius: 999px;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+/* ================= METRICS GRID ================= */
+.metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 28px;
+}
+
+/* ================= SINGLE METRIC ================= */
+.metric {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.metric-label {
+  font-size: 14px;
+  color: #475569;
+  font-weight: 500;
+}
+
+.metric-value {
+  font-size: 22px;
+  font-weight: 700;
+}
+
+/* ================= PROGRESS BAR ================= */
+.metric-bar {
+  width: 100%;
+  height: 10px;
+  background: #e5e7eb;
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.metric-fill {
+  height: 100%;
+  border-radius: 999px;
+  transition: width 0.4s ease;
+}
+
+/* ================= RESPONSIVE ================= */
+@media (max-width: 900px) {
+  .metrics-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .top-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+
+  .top-actions {
+    width: 100%;
+    justify-content: flex-end;
+  }
+}
+/* ================= MRI vs CLINICAL SPLIT ================= */
+.split-card {
+  margin-top: 36px;
+  background: #f8fafc;
+  border-radius: 16px;
+  padding: 24px;
+}
+
+.split-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: #0f172a;
+  margin-bottom: 20px;
+}
+
+/* Row */
+.split-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+  font-weight: 600;
+  color: #334155;
+  margin-bottom: 6px;
+}
+
+/* Bar */
+.split-bar {
+  width: 100%;
+  height: 10px;
+  background: #e5e7eb;
+  border-radius: 999px;
+  overflow: hidden;
+  margin-bottom: 18px;
+}
+
+/* Fill */
+.split-fill {
+  height: 100%;
+  border-radius: 999px;
+}
+
+/* MRI */
+.split-fill.mri {
+  background: linear-gradient(90deg, #2563eb, #60a5fa);
+}
+
+/* Clinical */
+.split-fill.clinical {
+  background: linear-gradient(90deg, #16a34a, #4ade80);
+}
+/* ===== MRI / CLINICAL ANALYSIS ===== */
+
+.analysis-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  margin-top: 28px;
+}
+
+.analysis-card {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 20px 22px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+}
+
+.analysis-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 16px;
+}
+
+.analysis-icon {
+  font-size: 22px;
+  background: #e0e7ff;
+  color: #2563eb;
+  padding: 10px;
+  border-radius: 12px;
+}
+
+.analysis-icon.purple {
+  background: #f3e8ff;
+  color: #7c3aed;
+}
+
+.analysis-header h3 {
+  margin: 0;
+  font-size: 16px;
+  color: #0f172a;
+}
+
+.analysis-header p {
+  margin: 2px 0 0;
+  font-size: 13px;
+  color: #64748b;
+}
+
+.analysis-metric {
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+  margin-bottom: 10px;
+  color: #0f172a;
+}
+
+.analysis-bar {
+  height: 10px;
+  background: #e5e7eb;
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.analysis-fill.dark {
+  height: 100%;
+  background: #020617;
+  border-radius: 999px;
+}
+/* ================= EXPLAINABILITY ================= */
+
+.explain-card {
+  background: #fff;
+  border-radius: 18px;
+  padding: 26px;
+  margin-top: 32px;
+  box-shadow: 0 20px 45px rgba(0,0,0,0.08);
+}
+
+.explain-header {
+  display: flex;
+  gap: 14px;
+  margin-bottom: 16px;
+}
+
+.explain-icon {
+  background: #ecfeff;
+  color: #0ea5e9;
+  padding: 12px;
+  border-radius: 12px;
+}
+
+.explain-header h2 {
+  margin: 0;
+  font-size: 18px;
+}
+
+.explain-header p {
+  margin: 4px 0 0;
+  font-size: 13px;
+  color: #64748b;
+}
+
+.explain-tabs {
+  display: flex;
+  background: #f1f5f9;
+  border-radius: 999px;
+  padding: 4px;
+  margin: 16px 0 20px;
+}
+
+.explain-tabs button {
+  flex: 1;
+  padding: 10px;
+  border: none;
+  background: transparent;
+  font-weight: 600;
+  cursor: pointer;
+  border-radius: 999px;
+}
+
+.explain-tabs button.active {
+  background: white;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+}
+
+.explain-text {
+  font-size: 14px;
+  color: #475569;
+  margin-bottom: 18px;
+}
+
+/* ===== GRADCAM ===== */
+
+.gradcam-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 22px;
+}
+
+.gradcam-grid img {
+  width: 100%;
+  border-radius: 12px;
+  border: 1px solid #e5e7eb;
+}
+
+/* ===== SHAP ===== */
+
+.shap-bars {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.shap-row {
+  display: grid;
+  grid-template-columns: 140px 1fr 60px;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+}
+
+.shap-bar {
+  height: 12px;
+  background: #f1f5f9;
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.shap-fill {
+  height: 100%;
+}
+
+.shap-fill.red {
+  background: linear-gradient(90deg, #fca5a5, #dc2626);
+}
+
+.shap-fill.blue {
+  background: linear-gradient(90deg, #93c5fd, #2563eb);
+}
+
+.red-text { color: #dc2626; }
+.blue-text { color: #2563eb; }

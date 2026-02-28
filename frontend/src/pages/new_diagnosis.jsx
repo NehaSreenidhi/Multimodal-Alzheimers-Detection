@@ -39,24 +39,28 @@ export default function NewDiagnosis() {
 
   // ✅ ACTUAL SUBMIT
   const handleSubmit = async () => {
-    try {
-      const payload = new FormData();
-      payload.append("mri", mriFile);
-      payload.append("data", JSON.stringify(formData));
+  try {
+    // ✅ CREATE PAYLOAD
+    const payload = new FormData();
+    payload.append("mri", mriFile);
+    payload.append("data", JSON.stringify(formData));
 
-      const result = await predictDiagnosis(payload);
+    // ✅ CALL BACKEND
+    const result = await predictDiagnosis(payload);
 
-      console.log("Result:", result);
-      // alert(result.predicted_class);
-      // Redirect to DiagnosisResult page with prediction
-      navigate("/diagnosis_result", {
-        state: { prediction: result.predicted_class },
-      });
+    console.log("Backend result:", result);
 
-    } catch (error) {
-      alert("Prediction failed");
-    }
-  };
+    // ✅ NAVIGATE WITH STATE
+    navigate("/diagnosis_result", {
+      state: {
+        prediction: result
+      }
+    });
+
+  } catch (error) {
+    console.error("Prediction failed", error);
+  }
+};
 
   return (
     <div className="diagnosis-container">
