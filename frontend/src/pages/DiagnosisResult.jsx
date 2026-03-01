@@ -55,8 +55,22 @@ export default function DiagnosisResult() {
     );
   }
 
-  const { fused_probabilities, confidence, predicted_class } = prediction;
+  const {
+    fused_probabilities,
+    confidence,
+    predicted_class,
+    mri_probabilities,
+    clinical_probability
+  } = prediction;
   const ui = CLASS_UI[predicted_class];
+
+  // ================= BACKEND CLASS ORDER =================
+  const CLASS_NAMES = [
+    "MildDemented",
+    "ModerateDemented",
+    "NonDemented",
+    "VeryMildDemented",
+  ];
 
   if (!ui || !Array.isArray(fused_probabilities)) {
     return (
@@ -74,11 +88,18 @@ export default function DiagnosisResult() {
   // Final probability & confidence
   const confidencePercent = Math.round(confidence * 100);
   const probabilityPercent = confidencePercent;
+  // Predicted class index
+  const predictedIndex = fused_probabilities.indexOf(confidence);
 
-  // MRI vs Clinical (derived from fusion)
-  const maxFused = Math.max(...fused_probabilities);
-  const mriContribution = Math.round(maxFused * 100);
-  const clinicalContribution = 100 - mriContribution;
+  // MRI confidence for predicted class
+  const mriConfidencePercent = mri_probabilities
+    ? Math.round(mri_probabilities[predictedIndex] * 100)
+    : 0;
+
+  // Clinical dementia probability (binary)
+  const clinicalConfidencePercent = clinical_probability
+  ? Math.round(clinical_probability * 100)
+  : 0;
 
   const now = new Date().toLocaleString();
 
@@ -130,15 +151,9 @@ export default function DiagnosisResult() {
 
           <div className="metrics-grid">
             <Metric
-              label="Final Probability"
+              label="Final Prediction Probability"
               value={probabilityPercent}
               color={ui.color}
-            />
-            <Metric
-              label="Confidence Score"
-              value={confidencePercent}
-              color="#2563eb"
-              gradient
             />
           </div>
         </div>
@@ -156,19 +171,23 @@ export default function DiagnosisResult() {
       </div>
     </div>
 
-    <div className="analysis-metric">
-      <span>CNN Confidence</span>
-      <strong>{Math.round(Math.max(...fused_probabilities) * 100)}%</strong>
-    </div>
-
-    <div className="analysis-bar">
-      <div
-        className="analysis-fill dark"
-        style={{
-          width: `${Math.round(Math.max(...fused_probabilities) * 100)}%`,
-        }}
-      />
-    </div>
+    {CLASS_NAMES.map((className, idx) => {
+      const prob = mri_probabilities ? Math.round(mri_probabilities[idx] * 100) : 0;
+      return (
+        <div key={className}>
+          <div className="analysis-metric">
+            <span>{CLASS_UI[className].label} Probability</span>
+            <strong>{prob}%</strong>
+          </div>
+          <div className="analysis-bar">
+            <div
+              className="analysis-fill dark"
+              style={{ width: `${prob}%` }}
+            />
+          </div>
+        </div>
+      );
+    })}
   </div>
 
   {/* CLINICAL ANALYSIS */}
@@ -182,18 +201,29 @@ export default function DiagnosisResult() {
     </div>
 
     <div className="analysis-metric">
-      <span>ML Confidence</span>
-      <strong>{confidencePercent}%</strong>
+      <span>Dementia Probability</span>
+      <strong>{clinicalConfidencePercent}%</strong>
     </div>
 
     <div className="analysis-bar">
       <div
         className="analysis-fill dark"
-        style={{ width: `${confidencePercent}%` }}
+        style={{ width: `${clinicalConfidencePercent}%` }}
+      />
+    </div>
+
+    <div className="analysis-metric">
+      <span>No Dementia Probability</span>
+      <strong>{100 - clinicalConfidencePercent}%</strong>
+    </div>
+
+    <div className="analysis-bar">
+      <div
+        className="analysis-fill dark"
+        style={{ width: `${100 - clinicalConfidencePercent}%` }}
       />
     </div>
   </div>
-
 </div>
 {/* ================= EXPLAINABILITY ================= */}
 <div className="explain-card">
@@ -230,56 +260,73 @@ export default function DiagnosisResult() {
       </p>
 
       <div className="gradcam-grid">
-        <div>
+        <div className="gradcam-item">
           <h4>Original MRI Scan</h4>
-          <img src={prediction.gradcam.original_image_url} alt="MRI" />
+          <img 
+            className="gradcam-image" 
+            src={prediction.gradcam.original_image_url} 
+            alt="Original MRI" 
+          />
+          <p className="gradcam-label">Input brain MRI scan</p>
         </div>
 
-        <div>
+        <div className="gradcam-item">
           <h4>Grad-CAM Heatmap</h4>
-          <img src={prediction.gradcam.heatmap_url} alt="GradCAM" />
+          <img 
+            className="gradcam-image"
+            src={prediction.gradcam.heatmap_url} 
+            alt="GradCAM Heatmap"
+          />
+          <p className="gradcam-label">
+            CNN attention regions overlaid on MRI
+          </p>
         </div>
+      </div>
+      <div className="gradcam-legend">
+        <p><strong>Key Findings:</strong></p>
+        <ul>
+          <li><span className="legend-red"/> High Attention (Red): Hippocampal region showing potential atrophy</li>
+          <li><span className="legend-orange"/> Moderate Attention (Orange): Temporal lobe areas with structural changes</li>
+          <li><span className="legend-yellow"/> Low Attention (Yellow): Cortical regions with mild changes</li>
+          <li><span className="legend-blue"/> Minimal Attention (Blue): Areas with normal appearance</li>
+        </ul>
       </div>
     </>
   )}
 
   {/* ================= SHAP ================= */}
-  {activeTab === "shap" && prediction.shap && (
+  {activeTab === "shap" && prediction.shap_plot && (
     <>
       <p className="explain-text">
-        SHAP values show how each clinical feature influenced the
-        prediction.
+        The SHAP waterfall plot illustrates how each clinical feature contributed to 
+        the final dementia probability.
       </p>
 
-      <div className="shap-bars">
-        {prediction.shap.features.map((f) => {
-          const isPositive = f.value > 0;
-          const width = Math.min(Math.abs(f.value) * 100, 100);
-
-          return (
-            <div key={f.name} className="shap-row">
-              <span>{f.name}</span>
-
-              <div className="shap-bar">
-                <div
-                  className={`shap-fill ${isPositive ? "red" : "blue"}`}
-                  style={{ width: `${width}%` }}
-                />
-              </div>
-
-              <small className={isPositive ? "red-text" : "blue-text"}>
-                {f.value > 0 ? "+" : ""}
-                {f.value.toFixed(2)}
-              </small>
-            </div>
-          );
-        })}
+      <div className="shap-plot-container">
+        <img 
+          src={prediction.shap_plot} 
+          alt="Clinical SHAP Waterfall Plot" 
+          style={{ 
+            width: '100%', 
+            height: 'auto', 
+            borderRadius: '8px',
+            boxShadow: '0 2px 8px rgba(0,0,0,0.1)' 
+          }} 
+        />
+        <div className="gradcam-legend">
+          <p><strong>How to read this plot:</strong></p>
+          <ul>
+            <li><span className="legend-red"/> <b>Red bars:</b> Factors that increased the risk of Alzheimer's.</li>
+            <li><span className="legend-blue"/> <b>Blue bars:</b> Factors that decreased the risk of Alzheimer's.</li>
+            <li><b>f(x):</b> The model's final prediction for this patient.</li>
+          </ul>
+        </div>
       </div>
     </>
   )}
-</div>
-      </div>
-    </div>
+  </div>
+  </div>
+  </div>
   );
 }
 
