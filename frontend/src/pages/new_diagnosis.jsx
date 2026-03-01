@@ -11,6 +11,7 @@ export default function NewDiagnosis() {
   const [step, setStep] = useState(1);
   const [mriFile, setMriFile] = useState(null);
   const [preview, setPreview] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   // clinical data state
   const [formData, setFormData] = useState({
@@ -40,6 +41,7 @@ export default function NewDiagnosis() {
   // ✅ ACTUAL SUBMIT
   const handleSubmit = async () => {
   try {
+    setLoading(true);
     // ✅ CREATE PAYLOAD
     const payload = new FormData();
     payload.append("mri", mriFile);
@@ -53,12 +55,14 @@ export default function NewDiagnosis() {
     // ✅ NAVIGATE WITH STATE
     navigate("/diagnosis_result", {
       state: {
-        prediction: result
+        prediction: result,
+        patient: formData
       }
     });
 
   } catch (error) {
     console.error("Prediction failed", error);
+    setLoading(false);
   }
 };
 
@@ -96,7 +100,13 @@ export default function NewDiagnosis() {
 
             <input type="file" hidden accept="image/*" onChange={handleFileUpload} />
           </label>
-
+        <div className="back">
+          <button
+                  className="secondary-btn"
+                  onClick={() => navigate("/")}
+                >
+                  Back
+                </button>
           <button
             className={`continue-btn ${mriFile ? "active" : ""}`}
             disabled={!mriFile}
@@ -105,6 +115,7 @@ export default function NewDiagnosis() {
             Continue
             <img src={arrowRight} alt="arrow" className="continue-icon" />
           </button>
+          </div>
         </div>
       )}
 
@@ -134,9 +145,9 @@ export default function NewDiagnosis() {
 
           <div className="footer-buttons">
             <button className="back-btn" onClick={() => setStep(1)}>Back</button>
-            <button className="generate-btn" onClick={handleSubmit}>
-              Generate Diagnosis
-            </button>
+            <button className="generate-btn" onClick={handleSubmit} disabled={loading}>
+  {loading ? <span className="spinner" /> : "Generate Diagnosis"}
+</button>
           </div>
         </div>
       )}

@@ -41,8 +41,10 @@ export default function DiagnosisResult() {
 
   /* ✅ SAFE READ */
   const prediction = location.state?.prediction;
+  const clinicalInputs = location.state?.patient;
+  
 
-  if (!prediction) {
+  if (!prediction || !clinicalInputs) {
     return (
       <div className="result-page">
         <div className="result-card">
@@ -116,14 +118,23 @@ export default function DiagnosisResult() {
 
           <div className="top-actions">
             <button
+          className="secondary-btn"
+          onClick={() => navigate("/")}
+        >
+          Home
+        </button>
+            <button
               className="secondary-btn"
               onClick={() => navigate("/new_diagnosis")}
             >
               New Diagnosis
             </button>
-            <button className="primary-btn">View Full Report</button>
+            
+            <button className="primary-btn">Download Report</button>
           </div>
         </div>
+    
+        
 
         {/* SUMMARY */}
         <div className="final-summary-card">
@@ -323,12 +334,39 @@ export default function DiagnosisResult() {
         </div>
       </div>
     </>
+    
   )}
   </div>
+  
+  
+  {/* ================= PATIENT SUMMARY ================= */}
+<div className="patient-summary-card">
+  <h3 className="patient-title">Patient Information Summary</h3>
+  <p className="patient-subtitle">Clinical data used for analysis</p>
+ <div className="patient-grid">
+    {/* Dynamic values from clinicalInputs */}
+    <Info label="MMSE Score" value={`${clinicalInputs.MMSE} / 30`} />
+    <Info label="Functional Score" value={`${clinicalInputs.FunctionalAssessment} / 100`} />
+    <Info label="ADL Score" value={`${clinicalInputs.ADL} / 100`} />
+    <Info label="BMI" value={clinicalInputs.BMI} />
+    <Info label="Sleep Quality" value={`${clinicalInputs.SleepQuality} / 5`} />
+    <Info label="HDL Cholesterol" value={`${clinicalInputs.CholesterolHDL} mg/dL`} />
+    <Info label="LDL Cholesterol" value={`${clinicalInputs.CholesterolLDL} mg/dL`} />
+    
+    {/* Symptoms (converted from Yes/No) */}
+    <Info label="Memory Complaints" value={clinicalInputs.MemoryComplaints} />
+    <Info label="Behavioral Problems" value={clinicalInputs.BehavioralProblems} />
+  </div>
+  {/* CENTER BUTTON */}
+  <div className="download-center">
+    <button className="primary-btn">Download Report</button>
+  </div>
+</div>
   </div>
   </div>
   );
 }
+
 
 /* ================= SUB COMPONENTS ================= */
 
@@ -350,6 +388,14 @@ function Metric({ label, value, color, gradient }) {
           }}
         />
       </div>
+    </div>
+  );
+}
+function Info({ label, value }) {
+  return (
+    <div className="patient-item">
+      <span className="patient-label">{label}</span>
+      <span className="patient-value">{value ?? "—"}</span>
     </div>
   );
 }

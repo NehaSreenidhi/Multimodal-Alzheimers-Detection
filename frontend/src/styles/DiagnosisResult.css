@@ -158,7 +158,32 @@
   font-size: 22px;
   font-weight: 700;
 }
+/* ===== Progress ===== */
+.progress-wrapper {
+  margin-bottom: 24px;
+}
 
+.progress-header {
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+  color: #475569;
+  margin-bottom: 8px;
+}
+
+.progress-bar {
+  height: 10px;
+  background: #e5e7eb;
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #4f46e5, #6366f1);
+  border-radius: 999px;
+  transition: width 0.4s ease;
+}
 /* ================= PROGRESS BAR ================= */
 .metric-bar {
   width: 100%;
@@ -460,3 +485,62 @@
 .legend-orange { display:inline-block; width:12px; height:12px; background:orange; margin-right:6px; }
 .legend-yellow { display:inline-block; width:12px; height:12px; background:yellow; margin-right:6px; }
 .legend-blue { display:inline-block; width:12px; height:12px; background:blue; margin-right:6px; }
+/* ================= PATIENT SUMMARY ================= */
+
+.patient-summary-card {
+  margin-top: 32px;
+  padding: 24px;
+  background: #ffffff;
+  border-radius: 14px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+  border: 1px solid #e5e7eb;
+}
+
+.patient-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: #111827;
+  margin-bottom: 4px;
+}
+
+.patient-subtitle {
+  font-size: 14px;
+  color: #6b7280;
+  margin-bottom: 20px;
+}
+
+/* GRID */
+.patient-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+}
+
+/* ITEM */
+.patient-item {
+  background: #f9fafb;
+  border-radius: 10px;
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #e5e7eb;
+}
+
+.patient-label {
+  font-size: 13px;
+  color: #6b7280;
+  margin-bottom: 4px;
+}
+
+.patient-value {
+  font-size: 16px;
+  font-weight: 600;
+  color: #111827;
+}
+
+/* CENTER BUTTON */
+.download-center {
+  display: flex;
+  justify-content: center;
+  margin-top: 24px;
+}
