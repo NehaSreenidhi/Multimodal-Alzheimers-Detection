@@ -100,22 +100,23 @@ export default function NewDiagnosis() {
 
             <input type="file" hidden accept="image/*" onChange={handleFileUpload} />
           </label>
-        <div className="back">
-          <button
-                  className="secondary-btn"
-                  onClick={() => navigate("/")}
-                >
-                  Back
-                </button>
-          <button
-            className={`continue-btn ${mriFile ? "active" : ""}`}
-            disabled={!mriFile}
-            onClick={() => setStep(2)}
-          >
-            Continue
-            <img src={arrowRight} alt="arrow" className="continue-icon" />
-          </button>
-          </div>
+        <div className="step-actions">
+  <button
+    className="secondary-btn"
+    onClick={() => navigate("/")}
+  >
+    Back
+  </button>
+
+  <button
+    className={`continue-btn ${mriFile ? "active" : ""}`}
+    disabled={!mriFile}
+    onClick={() => setStep(2)}
+  >
+    Continue
+    <img src={arrowRight} alt="arrow" className="continue-icon" />
+  </button>
+</div>
         </div>
       )}
 

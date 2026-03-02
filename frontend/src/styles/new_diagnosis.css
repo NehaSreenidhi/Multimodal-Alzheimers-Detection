@@ -116,33 +116,42 @@ body {
   max-height: 190px;
   border-radius: 14px;
 }
+/* ================= STEP ACTION BUTTONS ================= */
+
+.step-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 28px;
+  gap: 16px;
+}
+
+/* Back button already styled as secondary-btn */
 
 /* ================= CONTINUE BUTTON ================= */
 .continue-btn {
-  margin: 32px auto 0 auto;       
-  padding: 15px 30px;
-  border-radius: 14px;
-  border: none;
-  background-color: #cbd5e1;
-  color: #475569;
-  font-size: 16px;
-  font-weight: 600;
-  cursor: not-allowed;
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
+  padding: 12px 22px;
+  border-radius: 12px;
+  border: none;
+  background: #c7d2fe;
+  color: #3730a3;
+  font-weight: 600;
+  cursor: not-allowed;
+  transition: all 0.25s ease;
 }
 
 .continue-btn.active {
-  background: linear-gradient(90deg, #2563eb, #0ea5a4);
+  background: linear-gradient(90deg, #4f46e5, #6366f1);
   color: #ffffff;
   cursor: pointer;
 }
 
-/* ================= CONTINUE ICON ================= */
 .continue-icon {
-  width: 20px;
-  height: 20px;
+  width: 18px;
+  height: 18px;
   transition: transform 0.25s ease;
 }
 
@@ -223,7 +232,7 @@ body {
 
 .generate-btn {
   padding: 14px 30px;
-  background: linear-gradient(90deg, #2563eb, #0ea5a4);
+  background: linear-gradient(90deg, #2563eb, #6366f1);
   border: none;
   border-radius: 12px;
   color: #ffffff;

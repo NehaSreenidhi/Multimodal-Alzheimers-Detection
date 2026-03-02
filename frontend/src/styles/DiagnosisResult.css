@@ -94,7 +94,7 @@
 .summary-text p {
   font-size: 15px;
   color: #334155;
-  margin-top: 3px;
+  margin-top: 2px;
 }
 
 /* ================= METRICS CARD ================= */
@@ -348,6 +348,7 @@
   display: flex;
   gap: 14px;
   margin-bottom: 16px;
+  color: #000000;
 }
 
 .explain-icon {
@@ -360,6 +361,7 @@
 .explain-header h2 {
   margin: 0;
   font-size: 18px;
+  color: #000000;
 }
 
 .explain-header p {
@@ -374,6 +376,7 @@
   border-radius: 999px;
   padding: 4px;
   margin: 16px 0 20px;
+  
 }
 
 .explain-tabs button {
@@ -384,6 +387,7 @@
   font-weight: 600;
   cursor: pointer;
   border-radius: 999px;
+  color: #000000;
 }
 
 .explain-tabs button.active {
@@ -393,7 +397,7 @@
 
 .explain-text {
   font-size: 14px;
-  color: #475569;
+  color: #000000;
   margin-bottom: 18px;
 }
 
@@ -403,6 +407,7 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 22px;
+  color: #000000;
 }
 
 .gradcam-grid img {
@@ -440,6 +445,7 @@
 
 .shap-fill.red {
   background: linear-gradient(90deg, #fca5a5, #dc2626);
+  color: #000000;
 }
 
 .shap-fill.blue {
@@ -479,6 +485,7 @@
 .gradcam-legend {
   margin-top: 20px;
   font-size: 0.9rem;
+  color: #000000;
 }
 
 .legend-red { display:inline-block; width:12px; height:12px; background:red; margin-right:6px; }
@@ -543,4 +550,11 @@
   display: flex;
   justify-content: center;
   margin-top: 24px;
+}
+.summary-subtitle {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  color: #475569;
+  margin-top: 2px;
 }

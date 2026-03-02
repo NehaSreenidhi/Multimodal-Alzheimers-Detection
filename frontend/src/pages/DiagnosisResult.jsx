@@ -1,43 +1,53 @@
 import React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import "../styles/DiagnosisResult.css";
+import {
+  ShieldCheck,
+  AlertCircle,
+  TrendingUp,
+  Brain,
+} from "lucide-react";
 
 /* ================= UI MAP ================= */
 const CLASS_UI = {
+
   NonDemented: {
     label: "Non-Demented",
     description:
       "Multimodal indicators show no significant brain atrophy or cognitive deficits consistent with neurodegeneration.",
     color: "#16a34a",
-    icon: "🧠",
+    icon: ShieldCheck,
   },
+
   VeryMildDemented: {
     label: "Very Mild Demented",
     description:
-      "Subtle structural changes and minor clinical variances suggest early-stage cognitive impairment.",
+      "Subtle structural changes and minor clinical variances suggest the onset of early-stage cognitive impairment.",
     color: "#f59e0b",
-    icon: "🌱",
+    icon: AlertCircle,
   },
+
   MildDemented: {
     label: "Mild Demented",
     description:
-      "Identifiable patterns of cortical thinning indicate mild dementia progression.",
+      "Identifiable patterns of cortical thinning and functional scores indicate a transition into mild dementia.",
     color: "#ea580c",
-    icon: "⚠️",
+    icon: TrendingUp,
   },
+
   ModerateDemented: {
     label: "Moderate Demented",
     description:
-      "Pronounced global atrophy and daily activity impairment detected.",
+      "Pronounced global atrophy and significant deficits in daily living activities confirm a moderate dementia profile.",
     color: "#dc2626",
-    icon: "🧩",
+    icon: Brain,
   },
 };
-
 export default function DiagnosisResult() {
   const location = useLocation();
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = React.useState("gradcam");
+  
 
   /* ✅ SAFE READ */
   const prediction = location.state?.prediction;
@@ -65,6 +75,7 @@ export default function DiagnosisResult() {
     clinical_probability
   } = prediction;
   const ui = CLASS_UI[predicted_class];
+  const Icon = ui.icon;
 
   // ================= BACKEND CLASS ORDER =================
   const CLASS_NAMES = [
@@ -137,18 +148,20 @@ export default function DiagnosisResult() {
         
 
         {/* SUMMARY */}
-        <div className="final-summary-card">
-          <div
-            className="summary-icon"
-            style={{ backgroundColor: `${ui.color}20`, color: ui.color }}
-          >
-            {ui.icon}
-          </div>
-          <div className="summary-text">
-            <h3>{ui.label}</h3>
-            <p>{ui.description}</p>
-          </div>
-        </div>
+<div className="final-summary-card">
+  <div
+    className="summary-icon"
+    style={{ backgroundColor: `${ui.color}20`, color: ui.color }}
+  >
+    <Icon size={28} strokeWidth={2.2} />
+  </div>
+
+  <div className="summary-text">
+    <h3>{ui.label}</h3>
+    <span className="summary-subtitle">{ui.subtitle}</span>
+    <p>{ui.description}</p>
+  </div>
+</div>
 
         {/* METRICS */}
         <div className="metrics-card">
