@@ -25,7 +25,7 @@ def make_gradcam_heatmap(img_batch, model, last_conv_layer_name, pred_index=None
     )
 
     with tf.GradientTape() as tape:
-        conv_outputs, predictions = grad_model(img_batch)
+        conv_outputs, predictions = grad_model({"input_layer": img_batch})
         if pred_index is None:
             pred_index = tf.argmax(predictions[0])
         class_channel = predictions[:, pred_index]

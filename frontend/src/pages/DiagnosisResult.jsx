@@ -141,7 +141,7 @@ export default function DiagnosisResult() {
               New Diagnosis
             </button>
             
-            <button className="primary-btn">Download Report</button>
+            <button className="primary-btn" onClick={() => navigate("/generate_report")} >Download Report</button>
           </div>
         </div>
     
@@ -372,7 +372,7 @@ export default function DiagnosisResult() {
   </div>
   {/* CENTER BUTTON */}
   <div className="download-center">
-    <button className="primary-btn">Download Report</button>
+    <button className="primary-btn" onClick={() => navigate("/generate_report")} >Download Report</button>
   </div>
 </div>
   </div>

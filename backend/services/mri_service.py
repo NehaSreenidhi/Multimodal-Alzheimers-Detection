@@ -23,5 +23,5 @@ def preprocess_image(file):
 
 def predict_mri(file):
     image = preprocess_image(file)
-    preds = model.predict(image)[0]   # shape (4,)
+    preds = model.predict({"input_layer": image})[0]   # shape (4,)
     return preds

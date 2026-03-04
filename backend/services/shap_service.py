@@ -1,3 +1,6 @@
+import matplotlib
+matplotlib.use("Agg")
+
 import io
 import base64
 import matplotlib.pyplot as plt
