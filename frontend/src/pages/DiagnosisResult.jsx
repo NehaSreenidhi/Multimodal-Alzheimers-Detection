@@ -141,27 +141,39 @@ export default function DiagnosisResult() {
               New Diagnosis
             </button>
             
-            <button className="primary-btn" onClick={() => navigate("/generate_report")} >Download Report</button>
+            <button
+              className="primary-btn"
+              onClick={() =>
+                navigate("/generate_report", {
+                  state: {
+                    prediction,
+                    clinicalInputs
+                  }
+                })
+              }
+            >
+              View Report
+            </button>
           </div>
         </div>
     
         
 
-        {/* SUMMARY */}
-<div className="final-summary-card">
-  <div
-    className="summary-icon"
-    style={{ backgroundColor: `${ui.color}20`, color: ui.color }}
-  >
-    <Icon size={28} strokeWidth={2.2} />
-  </div>
+      {/* SUMMARY */}
+      <div className="final-summary-card">
+        <div
+          className="summary-icon"
+          style={{ backgroundColor: `${ui.color}20`, color: ui.color }}
+        >
+          <Icon size={28} strokeWidth={2.2} />
+        </div>
 
-  <div className="summary-text">
-    <h3>{ui.label}</h3>
-    <span className="summary-subtitle">{ui.subtitle}</span>
-    <p>{ui.description}</p>
-  </div>
-</div>
+        <div className="summary-text">
+          <h3>{ui.label}</h3>
+          <span className="summary-subtitle">{ui.subtitle}</span>
+          <p>{ui.description}</p>
+        </div>
+      </div>
 
         {/* METRICS */}
         <div className="metrics-card">
@@ -371,9 +383,9 @@ export default function DiagnosisResult() {
     <Info label="Behavioral Problems" value={clinicalInputs.BehavioralProblems} />
   </div>
   {/* CENTER BUTTON */}
-  <div className="download-center">
+  {/* <div className="download-center">
     <button className="primary-btn" onClick={() => navigate("/generate_report")} >Download Report</button>
-  </div>
+  </div> */}
 </div>
   </div>
   </div>

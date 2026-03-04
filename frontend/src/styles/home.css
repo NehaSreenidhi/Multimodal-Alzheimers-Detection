@@ -65,7 +65,7 @@
 /* ------------------------------ */
 
 .features2-container {
-  width: 100%;
+   width: 95.5%;
   padding: 60px 40px;
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); /* smaller responsive grid */
