@@ -142,7 +142,7 @@ export default function DiagnosisResult() {
             </button>
             
             <button
-              className="primary-btn"
+              className="view-btn"
               onClick={() =>
                 navigate("/generate_report", {
                   state: {

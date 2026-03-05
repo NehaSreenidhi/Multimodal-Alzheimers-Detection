@@ -41,15 +41,15 @@
 /* ================= HEADER BUTTONS ================= */
 .top-actions {
   display: flex;
-  gap: 14px;
+  gap: 13px;
 }
 
-.primary-btn {
+.view-btn {
   background: linear-gradient(90deg, #4f46e5, #6366f1);
   color: #ffffff;
   border: none;
-  padding: 12px 22px;
-  border-radius: 12px;
+  padding: 12px 33px;
+  border-radius: 19px;
   font-weight: 600;
   cursor: pointer;
   display: inline-block;
