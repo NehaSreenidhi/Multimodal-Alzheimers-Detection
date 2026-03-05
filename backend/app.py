@@ -20,6 +20,13 @@ CLINICAL_FEATURES = [
     "SleepQuality", "BMI", "CholesterolHDL", "CholesterolLDL"
 ]
 
+CLASS_NAMES = [
+    "MildDemented",
+    "ModerateDemented",
+    "NonDemented",
+    "VeryMildDemented",
+]
+
 @app.route('/predict', methods=['POST'])
 def predict():
     try:
@@ -99,6 +106,16 @@ def generate_report():
     mri_probs = model_results.get("mri_probabilities", [])
     clinical_prob = model_results.get("clinical_probability", 0)
 
+    mri_prob_dict = {
+        CLASS_NAMES[i]: round(float(mri_probs[i]) * 100, 2)
+        for i in range(len(CLASS_NAMES))
+    }
+
+    fused_prob_dict = {
+        CLASS_NAMES[i]: round(float(fused_probs[i]) * 100, 2)
+        for i in range(len(CLASS_NAMES))
+    }
+
     # -------------------------
     # Explainability
     # -------------------------
@@ -169,17 +186,14 @@ def generate_report():
     <hr style="margin-top:25px;"/>
 
     <!-- Model Assessment -->
-    <h2 style="color:#1f3c88;">3. AI Model Assessment</h2>
+    <h2 style="color:#1f3c88;">3. Model Diagnosis</h2>
 
     <table style="width:100%; border-collapse:collapse; margin-top:10px;">
         <tr>
             <td style="padding:8px;border:1px solid #ddd;"><strong>Final Predicted Class</strong></td>
             <td style="padding:8px;border:1px solid #ddd;">{predicted_class}</td>
         </tr>
-        <tr>
-            <td style="padding:8px;border:1px solid #ddd;"><strong>Prediction Confidence</strong></td>
-            <td style="padding:8px;border:1px solid #ddd;">{confidence}%</td>
-        </tr>
+
         <tr>
             <td style="padding:8px;border:1px solid #ddd;"><strong>Clinical Probability</strong></td>
             <td style="padding:8px;border:1px solid #ddd;">{round(clinical_prob * 100, 2)}%</td>
@@ -187,8 +201,24 @@ def generate_report():
     </table>
 
     <div style="margin-top:15px;">
-        <p><strong>Fused Probabilities:</strong> {fused_probs}</p>
-        <p><strong>MRI Model Probabilities:</strong> {mri_probs}</p>
+        <h3 style="margin-top:15px;">MRI Model Probabilities</h3>
+
+        <table style="width:100%; border-collapse:collapse;">
+        {''.join([
+            f"<tr><td style='padding:8px;border:1px solid #ddd;'><strong>{k}</strong></td><td style='padding:8px;border:1px solid #ddd;'>{v}%</td></tr>"
+            for k,v in mri_prob_dict.items()
+        ])}
+        </table>
+
+        <h3 style="margin-top:15px;">Fused Multimodal Probabilities</h3>
+
+        <table style="width:100%; border-collapse:collapse;">
+        {''.join([
+            f"<tr><td style='padding:8px;border:1px solid #ddd;'><strong>{k}</strong></td><td style='padding:8px;border:1px solid #ddd;'>{v}%</td></tr>"
+            for k,v in fused_prob_dict.items()
+        ])}
+        </table>
+        
     </div>
 
     <hr style="margin-top:25px;"/>
@@ -224,8 +254,8 @@ def generate_report():
 
     <p style="line-height:1.6;">
     Based on multimodal fusion of <strong>MRI imaging</strong> and 
-    <strong>structured clinical data</strong>, the AI system predicts
-    <strong>{predicted_class}</strong> with an estimated confidence of
+    <strong>structured clinical data</strong>, the system predicts
+    <strong>{predicted_class}</strong> with a probability of
     <strong>{confidence}%</strong>.
     </p>
 

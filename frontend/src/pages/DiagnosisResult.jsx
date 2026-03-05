@@ -51,7 +51,7 @@ export default function DiagnosisResult() {
 
   /* ✅ SAFE READ */
   const prediction = location.state?.prediction;
-  const clinicalInputs = location.state?.patient;
+  const clinicalInputs = location.state?.clinicalInputs;
   
 
   if (!prediction || !clinicalInputs) {

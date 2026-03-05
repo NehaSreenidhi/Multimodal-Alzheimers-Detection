@@ -56,7 +56,7 @@ export default function NewDiagnosis() {
     navigate("/diagnosis_result", {
       state: {
         prediction: result,
-        patient: formData
+        clinicalInputs: formData
       }
     });
 
