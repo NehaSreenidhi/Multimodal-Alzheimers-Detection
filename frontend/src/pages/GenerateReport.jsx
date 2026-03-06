@@ -81,7 +81,7 @@ export default function GenerateReport() {
     <div className="report-page">
       <div className="report-card">
 
-        <h1>Generate AI Diagnostic Report</h1>
+        {!reportHtml && <h2>Generate Diagnostic Report</h2>}
 
         {/* Form Section */}
         {!reportHtml && (

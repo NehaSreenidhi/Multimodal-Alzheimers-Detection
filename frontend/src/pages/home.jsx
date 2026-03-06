@@ -20,7 +20,7 @@ const Home = () => {
         </h1>
 
         <p className="hero2-subtitle">
-          Advanced AI-powered system combining deep learning analysis of MRI scans with
+          Advanced multimodal fusion system combining deep learning analysis of MRI scans with
           machine learning assessment of clinical features for early Alzheimer's detection.
         </p>
 
@@ -79,7 +79,7 @@ const Home = () => {
         <h2>Ready to Get Started?</h2>
         <p>
           Upload an MRI scan and provide clinical information to receive a comprehensive
-          Alzheimer's disease risk assessment with explainable AI insights.
+          Alzheimer's disease risk assessment with Explainable AI insights.
         </p>
 
         <button className="cta2-btn" onClick={() => navigate("/new_diagnosis")}>

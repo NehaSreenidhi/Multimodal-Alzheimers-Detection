@@ -58,7 +58,7 @@ margin-top: 10px;
 padding: 13px;
 border: none;
 border-radius: 8px;
-background: #3b82f6;
+background: #7c3aed;
 color: white;
 font-size: 16px;
 font-weight: 500;
@@ -68,7 +68,7 @@ transition: all 0.25s ease;
 
 /* Button hover */
 .primary-btn:hover {
-background: #2563eb;
+background: #7c53c3;
 transform: translateY(-1px);
 }
 
