@@ -1,4 +1,5 @@
 import numpy as np
+import pandas as pd
 import joblib
 
 model = joblib.load("models/clinical_model.pkl")
@@ -18,8 +19,9 @@ def predict_clinical(data):
         float(data["CholesterolLDL"]),
     ]
 
-    features = np.array(features).reshape(1, -1)
-    scaled = scaler.transform(features)
+    feature_names = scaler.feature_names_in_
+    features_df = pd.DataFrame([features], columns=feature_names)
+    scaled = scaler.transform(features_df)
 
     prob = model.predict_proba(scaled)[0][1]  # dementia probability
 

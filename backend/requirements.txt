@@ -6,3 +6,6 @@ joblib
 flask
 flask-cors
 tensorflow
+opencv-python
+matplotlib
+shap

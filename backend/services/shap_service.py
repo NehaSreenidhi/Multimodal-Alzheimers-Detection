@@ -1,32 +1,25 @@
-# utils/shap.py
+import matplotlib
+matplotlib.use("Agg")
+
+import io
+import base64
+import matplotlib.pyplot as plt
 import shap
-import numpy as np
 
-def compute_shap_values(
-    model,
-    X_background,
-    X_sample,
-    feature_names
-):
-    """
-    SHAP explanation for clinical ML model
+def get_shap_waterfall_plot(model, input_df):
+    # 1. Generate SHAP values
+    explainer = shap.TreeExplainer(model)
+    shap_values = explainer(input_df)
 
-    Args:
-        model: trained sklearn model
-        X_background: np.ndarray (background dataset)
-        X_sample: np.ndarray (single sample or batch)
-        feature_names: list of feature names
-
-    Returns:
-        shap_values, explainer
-    """
-
-    explainer = shap.Explainer(
-        model,
-        X_background,
-        feature_names=feature_names
-    )
-
-    shap_values = explainer(X_sample)
-
-    return shap_values, explainer
+    # 2. Create the plot without showing a popup window
+    plt.figure(figsize=(8, 6))
+    shap.plots.waterfall(shap_values[0], show=False)
+    
+    # 3. Save plot to a buffer
+    buf = io.BytesIO()
+    plt.savefig(buf, format="png", bbox_inches="tight")
+    plt.close() # Clean up memory
+    
+    # 4. Encode to Base64
+    base64_str = base64.b64encode(buf.getvalue()).decode("utf-8")
+    return f"data:image/png;base64,{base64_str}"

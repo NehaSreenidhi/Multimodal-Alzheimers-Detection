@@ -1,0 +1,126 @@
+/* Page Background */
+.report-page {
+min-height: 100vh;
+background: linear-gradient(135deg, #eef2f7, #dce6f3);
+display: flex;
+justify-content: center;
+align-items: center;
+padding: 40px 20px;
+font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Main Card */
+.report-card {
+background: #ffffff;
+width: 100%;
+max-width: 850px;
+border-radius: 14px;
+box-shadow: 0 10px 35px rgba(0,0,0,0.1);
+padding: 40px;
+}
+
+/* Title */
+.report-card h1 {
+text-align: center;
+margin-bottom: 30px;
+color: #2b3a55;
+font-weight: 600;
+}
+
+/* Form Layout */
+.report-form {
+display: flex;
+flex-direction: column;
+gap: 18px;
+}
+
+/* Inputs */
+.report-form input,
+.report-form select {
+padding: 12px 14px;
+border-radius: 8px;
+border: 1px solid #cfd6e0;
+font-size: 15px;
+transition: all 0.2s ease;
+}
+
+/* Focus effect */
+.report-form input:focus,
+.report-form select:focus {
+outline: none;
+border-color: #3b82f6;
+box-shadow: 0 0 4px rgba(59,130,246,0.3);
+}
+
+/* Button */
+.primary-btn {
+margin-top: 10px;
+padding: 13px;
+border: none;
+border-radius: 8px;
+background: #7c3aed;
+color: white;
+font-size: 16px;
+font-weight: 500;
+cursor: pointer;
+transition: all 0.25s ease;
+}
+
+/* Button hover */
+.primary-btn:hover {
+background: #7c53c3;
+transform: translateY(-1px);
+}
+
+/* Disabled Button */
+.primary-btn:disabled {
+background: #9aa7c1;
+cursor: not-allowed;
+}
+
+/* Report Preview Section */
+.report-preview {
+margin-top: 25px;
+}
+
+/* Actual report area (converted to PDF) */
+#report-content {
+background: white;
+padding: 25px;
+border-radius: 10px;
+border: 1px solid #e1e6ef;
+margin-bottom: 20px;
+}
+
+/* Table styling inside generated report */
+#report-content table {
+width: 100%;
+border-collapse: collapse;
+margin-top: 15px;
+}
+
+#report-content th,
+#report-content td {
+border: 1px solid #d7dde7;
+padding: 10px;
+text-align: left;
+}
+
+#report-content th {
+background: #f2f5fa;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+.report-card {
+padding: 25px;
+}
+
+.report-card h1 {
+font-size: 22px;
+}
+
+.primary-btn {
+font-size: 15px;
+}
+}

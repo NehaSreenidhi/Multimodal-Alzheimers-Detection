@@ -1,42 +1,269 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 import json
+import numpy as np
+import pandas as pd
 
-from services.mri_service import predict_mri
-from services.clinical_service import predict_clinical
+# Import your services
+from services.mri_service import model as mri_model, preprocess_image
+from services.clinical_service import predict_clinical, model as clinical_model
 from services.fusion_service import soft_late_fusion
+from services.gradcam_service import generate_gradcam
+from services.shap_service import get_shap_waterfall_plot
 
 app = Flask(__name__)
-CORS(app)  # Allow React to call backend
+CORS(app)
 
+CLINICAL_FEATURES = [
+    "MMSE", "FunctionalAssessment", "ADL", 
+    "MemoryComplaints", "BehavioralProblems", 
+    "SleepQuality", "BMI", "CholesterolHDL", "CholesterolLDL"
+]
 
-@app.route("/predict", methods=["POST"])
+CLASS_NAMES = [
+    "MildDemented",
+    "ModerateDemented",
+    "NonDemented",
+    "VeryMildDemented",
+]
+
+@app.route('/predict', methods=['POST'])
 def predict():
     try:
-        # Get MRI file
-        mri_file = request.files.get("mri")
-        if not mri_file:
-            return jsonify({"error": "MRI file missing"}), 400
+        # 1. Get Data
+        mri_file = request.files['mri']
+        clinical_data = json.loads(request.form['data'])
 
-        # Get clinical data
-        clinical_json = request.form.get("data")
-        if not clinical_json:
-            return jsonify({"error": "Clinical data missing"}), 400
+        # 2. MRI Prediction
+        # We preprocess here so we have the array for both prediction and Grad-CAM
+        img_batch = preprocess_image(mri_file) 
+        mri_preds = mri_model.predict(img_batch)[0]
+        mri_pred_index = int(np.argmax(mri_preds))
 
-        clinical_data = json.loads(clinical_json)
-
-        # Run models
-        mri_probs = predict_mri(mri_file)
+        # 3. Clinical Prediction
         clinical_prob = predict_clinical(clinical_data)
 
-        # Fuse
-        result = soft_late_fusion(mri_probs, clinical_prob)
+        # 4. Multimodal Fusion
+        fusion_result = soft_late_fusion(mri_preds, clinical_prob)
 
-        return jsonify(result)
+        # 5. Generate Grad-CAM (Passing the already loaded mri_model)
+        # Pass the preprocessed batch and the shared model instance
+        gradcam_data = generate_gradcam(img_batch, mri_model, mri_pred_index)
+
+        raw_values = [
+            float(clinical_data["MMSE"]),
+            float(clinical_data["FunctionalAssessment"]),
+            float(clinical_data["ADL"]),
+            1 if clinical_data["MemoryComplaints"] == "Yes" else 0,
+            1 if clinical_data["BehavioralProblems"] == "Yes" else 0,
+            float(clinical_data["SleepQuality"]),
+            float(clinical_data["BMI"]),
+            float(clinical_data["CholesterolHDL"]),
+            float(clinical_data["CholesterolLDL"]),
+        ]
+        # Ensure column order matches FEATURE_NAMES from clinical_service
+        input_df = pd.DataFrame([raw_values], columns=CLINICAL_FEATURES)
+        shap_plot_url = get_shap_waterfall_plot(clinical_model, input_df)
+
+        # 6. Combine Results
+        # Your React UI expects the 'gradcam' key inside the response
+        response = {
+            **fusion_result,
+            "gradcam": gradcam_data,
+            "shap_plot": shap_plot_url
+        }
+
+        return jsonify(response)
 
     except Exception as e:
+        print(f"Error: {str(e)}")
         return jsonify({"error": str(e)}), 500
 
+@app.route("/report", methods=["POST"])
+def generate_report():
+    data = request.get_json()
 
-if __name__ == "__main__":
+    patient_info = data.get("patient_info", {})
+    model_results = data.get("model_results", {})
+    clinical_inputs = data.get("clinical_inputs", {})
+
+    # -------------------------
+    # Patient Info
+    # -------------------------
+    patient_name = patient_info.get("patient_name", "N/A")
+    age = patient_info.get("age", "N/A")
+    gender = patient_info.get("gender", "N/A")
+    mobile_number = patient_info.get("mobile_number", "N/A")
+    clinical_history = patient_info.get("clinical_history", "Not Provided")
+
+    # -------------------------
+    # Model Results
+    # -------------------------
+    predicted_class = model_results.get("predicted_class", "Unknown")
+    confidence = round(model_results.get("confidence", 0) * 100, 2)
+
+    fused_probs = model_results.get("fused_probabilities", [])
+    mri_probs = model_results.get("mri_probabilities", [])
+    clinical_prob = model_results.get("clinical_probability", 0)
+
+    mri_prob_dict = {
+        CLASS_NAMES[i]: round(float(mri_probs[i]) * 100, 2)
+        for i in range(len(CLASS_NAMES))
+    }
+
+    fused_prob_dict = {
+        CLASS_NAMES[i]: round(float(fused_probs[i]) * 100, 2)
+        for i in range(len(CLASS_NAMES))
+    }
+
+    # -------------------------
+    # Explainability
+    # -------------------------
+    gradcam = model_results.get("gradcam", {})
+    shap_plot = model_results.get("shap_plot", "")
+
+    original_img = gradcam.get("original_image_url", "")
+    heatmap_img = gradcam.get("heatmap_url", "")
+
+    from datetime import datetime
+    report_date = datetime.now().strftime("%d %B %Y")
+
+        # -------------------------
+
+    # HTML REPORT
+
+    # -------------------------
+
+    html_content = f"""
+
+    <div style="font-family: 'Segoe UI', Arial, sans-serif; padding:40px; max-width:900px; margin:auto; background:white; color:#333;">
+
+    <!-- Header -->
+    <div style="text-align:center; margin-bottom:30px;">
+        <h1 style="margin-bottom:5px; color:#1f3c88;">
+        Alzheimer’s Diagnostic Report
+        </h1>
+        <p style="font-size:14px;">
+        Generated by Multimodal Fusion System
+        </p>
+        <p style="font-size:13px;">
+        <strong>Date:</strong> {report_date}
+        </p>
+    </div>
+
+    <hr style="border:1px solid #e0e0e0;"/>
+
+    <!-- Patient Information -->
+    <h2 style="color:#1f3c88;">1. Patient Information</h2>
+
+    <table style="width:100%; border-collapse:collapse; margin-top:10px;">
+        <tr>
+            <td style="padding:8px; border:1px solid #ddd;"><strong>Name</strong></td>
+            <td style="padding:8px; border:1px solid #ddd;">{patient_name}</td>
+            <td style="padding:8px; border:1px solid #ddd;"><strong>Age</strong></td>
+            <td style="padding:8px; border:1px solid #ddd;">{age}</td>
+        </tr>
+        <tr>
+            <td style="padding:8px; border:1px solid #ddd;"><strong>Gender</strong></td>
+            <td style="padding:8px; border:1px solid #ddd;">{gender}</td>
+            <td style="padding:8px; border:1px solid #ddd;"><strong>Mobile</strong></td>
+            <td style="padding:8px; border:1px solid #ddd;">{mobile_number}</td>
+        </tr>
+    </table>
+
+    <hr style="margin-top:25px;"/>
+
+    <!-- Clinical Inputs -->
+    <h2 style="color:#1f3c88;">2. Clinical Inputs</h2>
+
+    <table style="width:100%; border-collapse:collapse; margin-top:10px;">
+        {''.join([
+            f"<tr><td style='padding:8px;border:1px solid #ddd;'><strong>{k}</strong></td><td style='padding:8px;border:1px solid #ddd;'>{v}</td></tr>"
+            for k, v in clinical_inputs.items()
+        ])}
+    </table>
+
+    <hr style="margin-top:25px;"/>
+
+    <!-- Model Assessment -->
+    <h2 style="color:#1f3c88;">3. Diagnosis</h2>
+
+    <table style="width:100%; border-collapse:collapse; margin-top:10px;">
+        <tr>
+            <td style="padding:8px;border:1px solid #ddd;"><strong>Final Predicted Class</strong></td>
+            <td style="padding:8px;border:1px solid #ddd;">{predicted_class}</td>
+        </tr>
+
+        <tr>
+            <td style="padding:8px;border:1px solid #ddd;"><strong>Clinical Probability</strong></td>
+            <td style="padding:8px;border:1px solid #ddd;">{round(clinical_prob * 100, 2)}%</td>
+        </tr>
+    </table>
+
+    <div style="margin-top:15px;">
+        <h3 style="margin-top:15px;">MRI Model Probabilities</h3>
+
+        <table style="width:100%; border-collapse:collapse;">
+        {''.join([
+            f"<tr><td style='padding:8px;border:1px solid #ddd;'><strong>{k}</strong></td><td style='padding:8px;border:1px solid #ddd;'>{v}%</td></tr>"
+            for k,v in mri_prob_dict.items()
+        ])}
+        </table>
+
+        <h3 style="margin-top:15px;">Fused Multimodal Probabilities</h3>
+
+        <table style="width:100%; border-collapse:collapse;">
+        {''.join([
+            f"<tr><td style='padding:8px;border:1px solid #ddd;'><strong>{k}</strong></td><td style='padding:8px;border:1px solid #ddd;'>{v}%</td></tr>"
+            for k,v in fused_prob_dict.items()
+        ])}
+        </table>
+        
+    </div>
+
+    <hr style="margin-top:25px;"/>
+
+    <!-- MRI Explainability -->
+    <h2 style="color:#1f3c88;">4. MRI Explainability (Grad-CAM)</h2>
+
+    <div style="display:flex; gap:40px; justify-content:center; margin-top:15px;">
+        <div style="text-align:center;">
+            <p><strong>Original MRI</strong></p>
+            <img src="{original_img}" style="width:280px; border:1px solid #ddd; padding:5px;"/>
+        </div>
+
+        <div style="text-align:center;">
+            <p><strong>Grad-CAM Heatmap</strong></p>
+            <img src="{heatmap_img}" style="width:280px; border:1px solid #ddd; padding:5px;"/>
+        </div>
+    </div>
+
+    <hr style="margin-top:25px;"/>
+
+    <!-- SHAP -->
+    <h2 style="color:#1f3c88;">5. Clinical Feature Contribution (SHAP)</h2>
+
+    <div style="text-align:center; margin-top:10px;">
+        <img src="{shap_plot}" style="width:500px; border:1px solid #ddd; padding:6px;"/>
+    </div>
+
+    <hr style="margin-top:25px;"/>
+
+    <!-- Conclusion -->
+    <h2 style="color:#1f3c88;">6. Conclusion</h2>
+
+    <p style="line-height:1.6;">
+    Based on multimodal fusion of <strong>MRI imaging</strong> and 
+    <strong>structured clinical data</strong>, the system predicts
+    <strong>{predicted_class}</strong> with a probability of
+    <strong>{confidence}%</strong>.
+    </p>
+
+    </div>
+    """
+
+
+    return jsonify({"html_content": html_content})
+
+if __name__ == '__main__':
     app.run(debug=True)

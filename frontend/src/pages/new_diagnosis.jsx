@@ -11,6 +11,7 @@ export default function NewDiagnosis() {
   const [step, setStep] = useState(1);
   const [mriFile, setMriFile] = useState(null);
   const [preview, setPreview] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   // clinical data state
   const [formData, setFormData] = useState({
@@ -39,24 +40,31 @@ export default function NewDiagnosis() {
 
   // ✅ ACTUAL SUBMIT
   const handleSubmit = async () => {
-    try {
-      const payload = new FormData();
-      payload.append("mri", mriFile);
-      payload.append("data", JSON.stringify(formData));
+  try {
+    setLoading(true);
+    // ✅ CREATE PAYLOAD
+    const payload = new FormData();
+    payload.append("mri", mriFile);
+    payload.append("data", JSON.stringify(formData));
 
-      const result = await predictDiagnosis(payload);
+    // ✅ CALL BACKEND
+    const result = await predictDiagnosis(payload);
 
-      console.log("Result:", result);
-      // alert(result.predicted_class);
-      // Redirect to DiagnosisResult page with prediction
-      navigate("/diagnosis_result", {
-        state: { prediction: result.predicted_class },
-      });
+    console.log("Backend result:", result);
 
-    } catch (error) {
-      alert("Prediction failed");
-    }
-  };
+    // ✅ NAVIGATE WITH STATE
+    navigate("/diagnosis_result", {
+      state: {
+        prediction: result,
+        clinicalInputs: formData
+      }
+    });
+
+  } catch (error) {
+    console.error("Prediction failed", error);
+    setLoading(false);
+  }
+};
 
   return (
     <div className="diagnosis-container">
@@ -79,7 +87,6 @@ export default function NewDiagnosis() {
       {step === 1 && (
         <div className="card">
           <h3>Upload Brain MRI</h3>
-          <p className="subtitle">T1-weighted MRI scan</p>
 
           <label className="upload-box">
             {preview ? (
@@ -93,15 +100,23 @@ export default function NewDiagnosis() {
 
             <input type="file" hidden accept="image/*" onChange={handleFileUpload} />
           </label>
+        <div className="step-actions">
+  <button
+    className="secondary-btn"
+    onClick={() => navigate("/")}
+  >
+    Back
+  </button>
 
-          <button
-            className={`continue-btn ${mriFile ? "active" : ""}`}
-            disabled={!mriFile}
-            onClick={() => setStep(2)}
-          >
-            Continue
-            <img src={arrowRight} alt="arrow" className="continue-icon" />
-          </button>
+  <button
+    className={`continue-btn ${mriFile ? "active" : ""}`}
+    disabled={!mriFile}
+    onClick={() => setStep(2)}
+  >
+    Continue
+    <img src={arrowRight} alt="arrow" className="continue-icon" />
+  </button>
+</div>
         </div>
       )}
 
@@ -131,9 +146,9 @@ export default function NewDiagnosis() {
 
           <div className="footer-buttons">
             <button className="back-btn" onClick={() => setStep(1)}>Back</button>
-            <button className="generate-btn" onClick={handleSubmit}>
-              Generate Diagnosis
-            </button>
+            <button className="generate-btn" onClick={handleSubmit} disabled={loading}>
+  {loading ? <span className="spinner" /> : "Generate Diagnosis"}
+</button>
           </div>
         </div>
       )}
