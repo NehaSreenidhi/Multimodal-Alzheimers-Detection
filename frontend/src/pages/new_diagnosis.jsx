@@ -16,8 +16,8 @@ export default function NewDiagnosis() {
   // clinical data state
   const [formData, setFormData] = useState({
     MMSE: 26,
-    FunctionalAssessment: 80,
-    ADL: 85,
+    FunctionalAssessment: 8,
+    ADL: 8,
     MemoryComplaints: "No",
     BehavioralProblems: "No",
     SleepQuality: 3,
@@ -27,32 +27,68 @@ export default function NewDiagnosis() {
   });
 
   const handleFileUpload = (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
+  const file = e.target.files[0];
+  if (!file) return;
 
-    setMriFile(file);
-    setPreview(URL.createObjectURL(file));
-  };
+  const validTypes = ["image/png", "image/jpeg", "image/jpg"];
+
+  if (!validTypes.includes(file.type)) {
+    alert("Invalid file format. Please upload MRI images in PNG or JPG format.");
+    return;
+  }
+
+  setMriFile(file);
+  setPreview(URL.createObjectURL(file));
+};
 
   const handleChange = (key, value) => {
     setFormData({ ...formData, [key]: value });
   };
+  const validateClinicalInputs = () => {
+
+  if (formData.MMSE < 0 || formData.MMSE > 30) {
+    alert("MMSE must be between 0 and 30");
+    return false;
+  }
+
+  if (formData.SleepQuality < 1 || formData.SleepQuality > 5) {
+    alert("Sleep Quality must be between 1 and 5");
+    return false;
+  }
+
+  if (formData.FunctionalAssessment < 0 || formData.FunctionalAssessment > 10) {
+    alert("Functional Assessment must be between 0 and 10");
+    return false;
+  }
+
+  if (formData.ADL < 0 || formData.ADL > 10) {
+    alert("ADL must be between 0 and 10");
+    return false;
+  }
+
+  return true;
+};
 
   // ✅ ACTUAL SUBMIT
   const handleSubmit = async () => {
+
+  if (!validateClinicalInputs()) return;
+
   try {
     setLoading(true);
-    // ✅ CREATE PAYLOAD
+
+    const normalizedData = {
+      ...formData,
+      FunctionalAssessment: formData.FunctionalAssessment / 10,
+      ADL: formData.ADL / 10
+    };
+
     const payload = new FormData();
     payload.append("mri", mriFile);
-    payload.append("data", JSON.stringify(formData));
+    payload.append("data", JSON.stringify(normalizedData));
 
-    // ✅ CALL BACKEND
     const result = await predictDiagnosis(payload);
 
-    console.log("Backend result:", result);
-
-    // ✅ NAVIGATE WITH STATE
     navigate("/diagnosis_result", {
       state: {
         prediction: result,
@@ -98,7 +134,12 @@ export default function NewDiagnosis() {
               </>
             )}
 
-            <input type="file" hidden accept="image/*" onChange={handleFileUpload} />
+            <input
+  type="file"
+  hidden
+  accept=".png,.jpg,.jpeg"
+  onChange={handleFileUpload}
+/>
           </label>
         <div className="step-actions">
   <button
@@ -126,8 +167,8 @@ export default function NewDiagnosis() {
           <h3>Cognitive Assessment</h3>
           <div className="grid">
             <Input label="MMSE (0–30)" value={formData.MMSE} onChange={(v) => handleChange("MMSE", v)} />
-            <Input label="Functional Assessment (0–100)" value={formData.FunctionalAssessment} onChange={(v) => handleChange("FunctionalAssessment", v)} />
-            <Input label="ADL (0–100)" value={formData.ADL} onChange={(v) => handleChange("ADL", v)} />
+            <Input label="Functional Assessment (0–10)" value={formData.FunctionalAssessment} onChange={(v) => handleChange("FunctionalAssessment", v)} />
+            <Input label="ADL (0–10)" value={formData.ADL} onChange={(v) => handleChange("ADL", v)} />
           </div>
 
           <h3>Symptoms & Behavior</h3>
