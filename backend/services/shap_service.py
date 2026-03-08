@@ -21,5 +21,6 @@ def get_shap_waterfall_plot(model, input_df):
     plt.close() # Clean up memory
     
     # 4. Encode to Base64
-    base64_str = base64.b64encode(buf.getvalue()).decode("utf-8")
+    buf.seek(0)
+    base64_str = base64.b64encode(buf.read()).decode("utf-8")
     return f"data:image/png;base64,{base64_str}"

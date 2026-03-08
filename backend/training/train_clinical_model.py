@@ -1,9 +1,12 @@
 import os
+import numpy as np
 import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 from xgboost import XGBClassifier
-from sklearn.metrics import classification_report
+from sklearn.metrics import classification_report, confusion_matrix
+import seaborn as sns
+import matplotlib.pyplot as plt
 import joblib
 
 # -------------------------------
@@ -59,13 +62,46 @@ report = classification_report(y_test, y_pred)
 print("✅ Classification Report:\n", report)
 
 # Save classification report
-with open("../metrics/classification_report.txt", "w") as f:
+with open("metrics/classification_report.txt", "w") as f:
     f.write(report)
 print("✅ Classification report saved in metrics/")
+
+# Generate Confusion Matrix
+cm = confusion_matrix(y_test, y_pred)
+
+# Visualize the Confusion Matrix
+plt.figure(figsize=(8, 6))
+sns.heatmap(cm, annot=True, fmt='d', cmap='Blues', 
+            xticklabels=['Non-Demented', 'Demented'], 
+            yticklabels=['Non-Demented', 'Demented'])
+plt.xlabel('Predicted Label')
+plt.ylabel('True Label')
+plt.title('Confusion Matrix: Clinical ML Model')
+
+# Save the plot
+plt.savefig("metrics/clinical_confusion_matrix.png")
+plt.show()
+
+cm_txt_path = "metrics/clinical_confusion_matrix.txt"
+
+# Option 1: Save as a formatted NumPy array
+np.savetxt(cm_txt_path, cm, fmt='%d', 
+           header="Confusion Matrix: Rows=True, Cols=Predicted\n[Non-Demented, Demented]")
+
+# Option 2: Save as a more descriptive text summary
+with open(cm_txt_path, "w") as f:
+    f.write("Confusion Matrix: Clinical ML Model\n")
+    f.write("-" * 35 + "\n")
+    f.write(f"True Non-Demented: {cm[0][0]} (Correct) | {cm[0][1]} (Misclassified)\n")
+    f.write(f"True Demented:     {cm[1][0]} (Misclassified) | {cm[1][1]} (Correct)\n")
+    f.write("-" * 35 + "\n")
+    f.write(f"Raw Array:\n{cm}")
+
+print(f"✅ Confusion matrix text file saved in {cm_txt_path}")
 
 # -------------------------------
 # 7. Save model & scaler
 # -------------------------------
-joblib.dump(model, "../models/clinical_model.pkl")
-joblib.dump(scaler, "../models/clinical_scaler.pkl")
+joblib.dump(model, "models/clinical_model.pkl")
+joblib.dump(scaler, "models/clinical_scaler.pkl")
 print("✅ Model and scaler saved in models/")
