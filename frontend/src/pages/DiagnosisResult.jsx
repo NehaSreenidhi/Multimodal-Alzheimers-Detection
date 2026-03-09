@@ -371,8 +371,8 @@ export default function DiagnosisResult() {
  <div className="patient-grid">
     {/* Dynamic values from clinicalInputs */}
     <Info label="MMSE Score" value={`${clinicalInputs.MMSE} / 30`} />
-    <Info label="Functional Score" value={`${clinicalInputs.FunctionalAssessment} / 100`} />
-    <Info label="ADL Score" value={`${clinicalInputs.ADL} / 100`} />
+    <Info label="Functional Score" value={`${clinicalInputs.FunctionalAssessment} / 10`} />
+    <Info label="ADL Score" value={`${clinicalInputs.ADL} / 10`} />
     <Info label="BMI" value={clinicalInputs.BMI} />
     <Info label="Sleep Quality" value={`${clinicalInputs.SleepQuality} / 5`} />
     <Info label="HDL Cholesterol" value={`${clinicalInputs.CholesterolHDL} mg/dL`} />

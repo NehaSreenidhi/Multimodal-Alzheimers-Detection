@@ -1,0 +1,8 @@
+Confusion Matrix: Clinical ML Model
+-----------------------------------
+True Non-Demented: 270 (Correct) | 8 (Misclassified)
+True Demented:     13 (Misclassified) | 139 (Correct)
+-----------------------------------
+Raw Array:
+[[270   8]
+ [ 13 139]]
