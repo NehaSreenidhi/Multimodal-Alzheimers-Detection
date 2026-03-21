@@ -128,6 +128,7 @@ export default function DiagnosisResult() {
           </div>
 
           <div className="top-actions">
+            
             <button
           className="secondary-btn"
           onClick={() => navigate("/")}
@@ -136,7 +137,7 @@ export default function DiagnosisResult() {
         </button>
             <button
               className="secondary-btn"
-              onClick={() => navigate("/new_diagnosis")}
+              onClick={() => navigate("/generate_report")}
             >
               New Diagnosis
             </button>

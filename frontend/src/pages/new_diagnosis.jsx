@@ -21,9 +21,10 @@ export default function NewDiagnosis() {
     MemoryComplaints: "No",
     BehavioralProblems: "No",
     SleepQuality: 3,
-    BMI: 23,
+    Age: 23,
     CholesterolHDL: 55,
     CholesterolLDL: 120,
+    FamilyHistoryAlzheimers: "No"
   });
 
   const handleFileUpload = (e) => {
@@ -59,9 +60,6 @@ export default function NewDiagnosis() {
 
     if (formData.SleepQuality < 1 || formData.SleepQuality > 5)
       errors.push("Sleep Quality must be between 1 and 5");
-
-    if (formData.BMI < 10 || formData.BMI > 60)
-      errors.push("BMI must be between 10 and 60");
 
     if (formData.CholesterolHDL < 10 || formData.CholesterolHDL > 120)
       errors.push("HDL must be between 10 and 120 mg/dL");
@@ -144,7 +142,7 @@ export default function NewDiagnosis() {
         <div className="step-actions">
   <button
     className="secondary-btn"
-    onClick={() => navigate("/")}
+    onClick={() => navigate("/generate_report")}
   >
     Back
   </button>
@@ -180,9 +178,10 @@ export default function NewDiagnosis() {
 
           <h3>Metabolic & Clinical Factors</h3>
           <div className="grid">
-            <Input label="BMI" value={formData.BMI} onChange={(v) => handleChange("BMI", v)} />
+            <Input label="Age" value={formData.Age} onChange={(v) => handleChange("Age", v)} />
             <Input label="Cholesterol HDL (mg/dL)" value={formData.CholesterolHDL} onChange={(v) => handleChange("CholesterolHDL", v)} />
             <Input label="Cholesterol LDL (mg/dL)" value={formData.CholesterolLDL} onChange={(v) => handleChange("CholesterolLDL", v)} />
+            <Select label="Family History Alzheimers" value={formData.FamilyHistoryAlzheimers} onChange={(v) => handleChange("FamilyHistoryAlzheimers", v)} />
           </div>
 
           <div className="footer-buttons">

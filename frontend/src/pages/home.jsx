@@ -26,7 +26,7 @@ const Home = () => {
 
         <div className="hero2-btn-group">
           
-<button className="hero2-btn-primary" onClick={() => navigate("/new_diagnosis")}>
+<button className="hero2-btn-primary" onClick={() => navigate("/generate_report")}>
   <ArrowUpRight size={18} strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round" />
   Start Diagnosis
 </button>
