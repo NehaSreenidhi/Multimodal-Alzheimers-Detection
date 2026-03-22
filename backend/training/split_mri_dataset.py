@@ -2,7 +2,7 @@ import os
 import pandas as pd
 from sklearn.model_selection import train_test_split
 
-ROOT_DIR = "E:\Alzheimers Fusion Project\MRI DATA"
+ROOT_DIR = "E:\MAJOR PROJECT\Multimodal Alzheimers Detection\Datasets\MRI DATA"
 
 data = []
 
@@ -29,9 +29,9 @@ val_df, test_df = train_test_split(
 )
 
 # Save splits
-train_df.to_csv("data/train_mri.csv", index=False)
-val_df.to_csv("data/val_mri.csv", index=False)
-test_df.to_csv("data/test_mri.csv", index=False)
+train_df.to_csv("../Datasets/train_mri.csv", index=False)
+val_df.to_csv("../Datasets/val_mri.csv", index=False)
+test_df.to_csv("../Datasets/test_mri.csv", index=False)
 
 print("\nTrain distribution:")
 print(train_df["label"].value_counts())
