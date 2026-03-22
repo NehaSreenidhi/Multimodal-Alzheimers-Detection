@@ -16,10 +16,11 @@ app = Flask(__name__)
 CORS(app)
 
 MODEL_FEATURES = [
-    "FunctionalAssessment", "ADL", "MMSE",
+    "MMSE", "FunctionalAssessment", "ADL", 
     "MemoryComplaints", "BehavioralProblems",
-    "SleepQuality", "BMI",
-    "CholesterolHDL", "CholesterolLDL"
+    "SleepQuality", "Age",
+    "CholesterolHDL", "CholesterolLDL", 
+    "FamilyHistoryAlzheimers"
 ]
 
 CLASS_NAMES = [
@@ -60,14 +61,15 @@ def predict():
             "MemoryComplaints": 1 if clinical_data["MemoryComplaints"] == "Yes" else 0,
             "BehavioralProblems": 1 if clinical_data["BehavioralProblems"] == "Yes" else 0,
             "SleepQuality": float(clinical_data["SleepQuality"]),
-            "BMI": float(clinical_data["BMI"]),
+            "Age": int(clinical_data["Age"]),
             "CholesterolHDL": float(clinical_data["CholesterolHDL"]),
             "CholesterolLDL": float(clinical_data["CholesterolLDL"]),
+            "FamilyHistoryAlzheimers": 1 if clinical_data["FamilyHistoryAlzheimers"] == "Yes" else 0
         }
         # Create dataframe using UI order
         input_df = pd.DataFrame([input_dict])
 
-        # 🔥 Reorder columns to match training order
+        # Reorder columns to match training order
         input_df = input_df[MODEL_FEATURES]
         scaled_values = clinical_scaler.transform(input_df)
 
@@ -97,17 +99,13 @@ def generate_report():
     model_results = data.get("model_results", {})
     clinical_inputs = data.get("clinical_inputs", {})
 
-    # -------------------------
+   
     # Patient Info
-    # -------------------------
     patient_name = patient_info.get("patient_name", "N/A")
-    age = patient_info.get("age", "N/A")
     gender = patient_info.get("gender", "N/A")
     mobile_number = patient_info.get("mobile_number", "N/A")
 
-    # -------------------------
     # Model Results
-    # -------------------------
     predicted_class = model_results.get("predicted_class", "Unknown")
     confidence = round(model_results.get("confidence", 0) * 100, 2)
 
@@ -125,9 +123,7 @@ def generate_report():
         for i in range(len(CLASS_NAMES))
     }
 
-    # -------------------------
     # Explainability
-    # -------------------------
     gradcam = model_results.get("gradcam", {})
     shap_plot = model_results.get("shap_plot", "")
 
@@ -138,8 +134,6 @@ def generate_report():
     report_date = datetime.now().strftime("%d %B %Y")
 
     # HTML REPORT
-
-    # -------------------------
 
     html_content = f"""
 
@@ -167,8 +161,7 @@ def generate_report():
         <tr>
             <td style="padding:8px; border:1px solid #ddd;"><strong>Name</strong></td>
             <td style="padding:8px; border:1px solid #ddd;">{patient_name}</td>
-            <td style="padding:8px; border:1px solid #ddd;"><strong>Age</strong></td>
-            <td style="padding:8px; border:1px solid #ddd;">{age}</td>
+            
         </tr>
         <tr>
             <td style="padding:8px; border:1px solid #ddd;"><strong>Gender</strong></td>
@@ -268,7 +261,6 @@ def generate_report():
 
     </div>
     """
-
 
     return jsonify({"html_content": html_content})
 

@@ -1,0 +1,123 @@
+
+/* Page Background */
+.take-page {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #eef2f7, #dce6f3);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px 20px;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Main Card */
+.take-card {
+  background: #ffffff;
+  width: 100%;
+  max-width: 850px;
+  border-radius: 14px;
+  box-shadow: 0 10px 35px rgba(0,0,0,0.1);
+  padding: 40px;
+}
+
+/* Title */
+.take-card h2 {
+  text-align: center;
+  margin-bottom: 30px;
+  color: #2b3a55;
+  font-weight: 600;
+}
+
+/* Form Layout */
+.take-form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+/* Inputs */
+.take-form input,
+.take-form select {
+  padding: 12px 14px;
+  border-radius: 8px;
+  border: 1px solid #cfd6e0;
+  font-size: 15px;
+  transition: all 0.2s ease;
+}
+
+/* Focus effect */
+.take-form input:focus,
+.take-form select:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 4px rgba(59,130,246,0.3);
+}
+
+/* File Upload */
+.file-upload {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 14px;
+  color: #444;
+}
+
+.file-upload input {
+  padding: 6px;
+  border: none;
+}
+
+/* Button group */
+.button-group {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+/* Secondary button */
+.secondary-btn {
+  background: #e5e7eb;
+  border: none;
+  padding: 10px 16px;
+  cursor: pointer;
+  border-radius: 6px;
+}
+
+/* Primary button */
+.primary-btn {
+  background: #2563eb;
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  cursor: pointer;
+  border-radius: 6px;
+  transition: all 0.25s ease;
+}
+
+/* Hover */
+.primary-btn:hover {
+  background: #1e4ed8;
+  transform: translateY(-1px);
+}
+
+/* Disabled */
+.primary-btn:disabled {
+  background: #9aa7c1;
+  cursor: not-allowed;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .take-card {
+    padding: 25px;
+  }
+
+  .take-card h2 {
+    font-size: 22px;
+  }
+
+  .primary-btn {
+    font-size: 15px;
+  }
+}

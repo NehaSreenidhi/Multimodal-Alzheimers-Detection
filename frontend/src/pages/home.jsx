@@ -2,7 +2,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import { Brain, Zap, Shield, Target } from "lucide-react";
 import { ArrowUpRight } from "lucide-react";
-import "../styles/home.css";
+import "../styles/Home.css";
 
 const Home = () => {
   const navigate = useNavigate();
@@ -26,7 +26,7 @@ const Home = () => {
 
         <div className="hero2-btn-group">
           
-<button className="hero2-btn-primary" onClick={() => navigate("/generate_report")}>
+<button className="hero2-btn-primary" onClick={() => navigate("/take_details")}>
   <ArrowUpRight size={18} strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round" />
   Start Diagnosis
 </button>

@@ -14,9 +14,10 @@ def predict_clinical(data):
         1 if data["MemoryComplaints"] == "Yes" else 0,
         1 if data["BehavioralProblems"] == "Yes" else 0,
         float(data["SleepQuality"]),
-        float(data["BMI"]),
+        int(data["Age"]),
         float(data["CholesterolHDL"]),
         float(data["CholesterolLDL"]),
+        1 if data["FamilyHistoryAlzheimers"] == "Yes" else 0,
     ]
 
     feature_names = scaler.feature_names_in_

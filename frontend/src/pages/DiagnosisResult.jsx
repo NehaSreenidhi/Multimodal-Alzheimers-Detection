@@ -52,9 +52,9 @@ export default function DiagnosisResult() {
   /* ✅ SAFE READ */
   const prediction = location.state?.prediction;
   const clinicalInputs = location.state?.clinicalInputs;
-  
+  const patientDetails = location.state?.patientDetails;  
 
-  if (!prediction || !clinicalInputs) {
+  if (!prediction || !clinicalInputs || !patientDetails) {
     return (
       <div className="result-page">
         <div className="result-card">
@@ -129,32 +129,27 @@ export default function DiagnosisResult() {
 
           <div className="top-actions">
             
-            <button
-          className="secondary-btn"
-          onClick={() => navigate("/")}
-        >
-          Home
-        </button>
-            <button
-              className="secondary-btn"
-              onClick={() => navigate("/generate_report")}
-            >
-              New Diagnosis
-            </button>
+          <button
+            className="secondary-btn"
+            onClick={() => navigate("/")}>
+          Home </button>
+          <button
+            className="secondary-btn"
+            onClick={() => navigate("/new_diagnosis")}>
+          New Diagnosis </button>
             
-            <button
-              className="view-btn"
-              onClick={() =>
-                navigate("/generate_report", {
-                  state: {
-                    prediction,
-                    clinicalInputs
-                  }
-                })
-              }
-            >
-              View Report
-            </button>
+          <button
+            className="view-btn"
+            onClick={() =>
+              navigate("/generate_report", {
+                state: {
+                  prediction,
+                  clinicalInputs, 
+                  patientDetails
+                }
+              })
+            }>
+          View Report </button>
           </div>
         </div>
     
@@ -374,7 +369,7 @@ export default function DiagnosisResult() {
     <Info label="MMSE Score" value={`${clinicalInputs.MMSE} / 30`} />
     <Info label="Functional Score" value={`${clinicalInputs.FunctionalAssessment} / 10`} />
     <Info label="ADL Score" value={`${clinicalInputs.ADL} / 10`} />
-    <Info label="BMI" value={clinicalInputs.BMI} />
+    <Info label="Age" value={clinicalInputs.Age} />
     <Info label="Sleep Quality" value={`${clinicalInputs.SleepQuality} / 5`} />
     <Info label="HDL Cholesterol" value={`${clinicalInputs.CholesterolHDL} mg/dL`} />
     <Info label="LDL Cholesterol" value={`${clinicalInputs.CholesterolLDL} mg/dL`} />
@@ -382,6 +377,7 @@ export default function DiagnosisResult() {
     {/* Symptoms (converted from Yes/No) */}
     <Info label="Memory Complaints" value={clinicalInputs.MemoryComplaints} />
     <Info label="Behavioral Problems" value={clinicalInputs.BehavioralProblems} />
+    <Info label="Family History Of Alzheimers" value={clinicalInputs.FamilyHistoryAlzheimers} />
   </div>
   {/* CENTER BUTTON */}
   {/* <div className="download-center">
