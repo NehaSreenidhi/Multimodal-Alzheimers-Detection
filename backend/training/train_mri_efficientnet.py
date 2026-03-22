@@ -17,7 +17,7 @@ from tensorflow.keras.callbacks import EarlyStopping, ReduceLROnPlateau, ModelCh
 MODEL_DIR   = "models"
 METRICS_DIR = "metrics"
 ASSETS_DIR  = "assets"
-CSV_DIR     = "data"
+CSV_DIR     = "../Datasets"
 
 os.makedirs(MODEL_DIR, exist_ok=True)
 os.makedirs(METRICS_DIR, exist_ok=True)
@@ -171,5 +171,5 @@ model.fit(
     callbacks=callbacks
 )
 
-print("\n✅ EfficientNet MRI training completed successfully")
-print("👉 Best model saved at: models/mri_effnet_best.h5")
+print("\n EfficientNet MRI training completed successfully")
+print("Best model saved at: models/mri_effnet_best.h5")
