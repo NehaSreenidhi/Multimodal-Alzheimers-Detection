@@ -135,7 +135,7 @@ export default function DiagnosisResult() {
           Home </button>
           <button
             className="secondary-btn"
-            onClick={() => navigate("/new_diagnosis")}>
+            onClick={() => navigate("/take_details")}>
           New Diagnosis </button>
             
           <button
@@ -378,6 +378,7 @@ export default function DiagnosisResult() {
     <Info label="Memory Complaints" value={clinicalInputs.MemoryComplaints} />
     <Info label="Behavioral Problems" value={clinicalInputs.BehavioralProblems} />
     <Info label="Family History Of Alzheimers" value={clinicalInputs.FamilyHistoryAlzheimers} />
+
   </div>
   {/* CENTER BUTTON */}
   {/* <div className="download-center">

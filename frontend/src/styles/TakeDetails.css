@@ -121,3 +121,38 @@
     font-size: 15px;
   }
 }
+.button-group {
+  display: flex;
+  justify-content: space-between;
+  gap: 30px;
+  margin-top: 20px;
+}
+
+/* SAME SIZE BUTTONS */
+.back-btn,
+.next-btn {
+  flex: 1;
+  padding: 10px 0;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+  border: none;
+}
+
+/* BACK BUTTON (light) */
+.back-btn {
+  background: #e5e7eb;
+  color: #374151;
+}
+
+/* NEXT BUTTON (violet theme) */
+.next-btn {
+  background: #4f46e5; /* violet */
+  color: white;
+  transition: 0.3s;
+}
+
+.next-btn:hover {
+  background: #4f46e5; /* darker violet */
+}

@@ -68,20 +68,20 @@ export default function TakeDetails() {
           </select>
 
           <div className="button-group">
-            <button
-              className="secondary-btn"
-              onClick={() => navigate("/")}
-            >
-              Back
-            </button>
+  <button
+    className="back-btn"
+    onClick={() => navigate("/")}
+  >
+    Back
+  </button>
 
-            <button
-              className="primary-btn"
-              onClick={handleNext}
-            >
-              Next
-            </button>
-          </div>
+  <button
+    className="next-btn"
+    onClick={handleNext}
+  >
+    Next
+  </button>
+</div>
 
         </div>
       </div>

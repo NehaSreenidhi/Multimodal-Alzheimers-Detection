@@ -192,7 +192,7 @@ export default function NewDiagnosis() {
           <div className="footer-buttons">
             <button className="back-btn" onClick={() => setStep(1)}>Back</button>
             <button className="generate-btn" onClick={handleSubmit} disabled={loading}>
-              {Loading ? <span className="spinner" /> : "Generate Diagnosis"}
+              {loading ? <span className="spinner" /> : "Generate Diagnosis"}
             </button>
           </div>
         </div>
