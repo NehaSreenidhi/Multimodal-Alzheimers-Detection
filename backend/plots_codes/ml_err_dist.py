@@ -41,7 +41,7 @@ plt.tight_layout()
 
 # Ensure metrics directory exists before saving
 os.makedirs("metrics", exist_ok=True)
-plt.savefig("metrics/ml_error_distribution.png")
+plt.savefig("metrics/plots/ml_error_distribution.png")
 plt.show()
 
-print(f"✅ Error distribution plot saved with FP: {FP} and FN: {FN}")
+print(f"Error distribution plot saved with FP: {FP} and FN: {FN}")

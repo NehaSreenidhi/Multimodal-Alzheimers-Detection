@@ -44,5 +44,5 @@ plt.ylim(0,1)
 plt.xticks(rotation=0)
 plt.tight_layout()
 
-plt.savefig("metrics/ml_class_metrics.png", dpi=300)
+plt.savefig("metrics/plots/ml_class_metrics.png", dpi=300)
 plt.show()

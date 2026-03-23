@@ -21,6 +21,6 @@ plt.title("Per-Class Accuracy (EfficientNet Model)")
 
 plt.ylim(0,1)
 
-plt.savefig("metrics/effnet_per_class_accuracy.png", dpi=300, bbox_inches="tight")
+plt.savefig("metrics/plots/effnet_per_class_accuracy.png", dpi=300, bbox_inches="tight")
 
 plt.show()

@@ -18,6 +18,6 @@ plt.ylabel("True Label")
 plt.title("Confusion Matrix")
 
 # Save to metrics folder
-plt.savefig("metrics/effnet_confusionmatrix.png", dpi=300, bbox_inches="tight")
+plt.savefig("metrics/plots/effnet_confusionmatrix.png", dpi=300, bbox_inches="tight")
 
 plt.show()
