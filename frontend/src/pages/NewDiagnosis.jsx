@@ -74,7 +74,7 @@ export default function NewDiagnosis() {
     return errors;
   };
 
-  // ✅ ACTUAL SUBMIT
+  // ACTUAL SUBMIT
   const handleSubmit = async () => {
   try {
     const errors = validateInputs();
@@ -85,17 +85,17 @@ export default function NewDiagnosis() {
     }
 
     setLoading(true);
-    // ✅ CREATE PAYLOAD
+    // CREATE PAYLOAD
     const payload = new FormData();
     payload.append("mri", mriFile);
     payload.append("data", JSON.stringify(formData));
 
-    // ✅ CALL BACKEND
+    // CALL BACKEND
     const result = await predictDiagnosis(payload);
 
     console.log("Backend result:", result);
 
-    // ✅ NAVIGATE WITH STATE
+    // NAVIGATE WITH STATE
     navigate("/diagnosis_result", {
       state: {
         prediction: result,
@@ -192,7 +192,7 @@ export default function NewDiagnosis() {
           <div className="footer-buttons">
             <button className="back-btn" onClick={() => setStep(1)}>Back</button>
             <button className="generate-btn" onClick={handleSubmit} disabled={loading}>
-              {loading ? <span className="spinner" /> : "Generate Diagnosis"}
+              {Loading ? <span className="spinner" /> : "Generate Diagnosis"}
             </button>
           </div>
         </div>

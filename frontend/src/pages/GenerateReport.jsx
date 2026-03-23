@@ -27,7 +27,7 @@ export default function GenerateReport() {
     );
   }
 
-  /* ✅ AUTO GENERATE REPORT ON LOAD */
+  /* AUTO GENERATE REPORT ON LOAD */
   React.useEffect(() => {
     const generateReport = async () => {
       try {
@@ -76,10 +76,10 @@ export default function GenerateReport() {
 
         <h2>Diagnostic Report</h2>
 
-        {/* ✅ Loading */}
+        {/* Loading */}
         {loading && <p className="loading-text">Generating report...</p>}
 
-        {/* ✅ Preview */}
+        {/* Preview */}
         {!loading && reportHtml && (
           <div className="report-preview">
 
