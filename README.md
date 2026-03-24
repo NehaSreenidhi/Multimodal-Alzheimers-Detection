@@ -58,3 +58,44 @@ To improve transparency and trust in predictions:
 
 ---
 
+## Setup Instructions
+
+1. Clone the Repository
+```bash
+git clone <repo-url>
+cd <repository-folder>
+```
+
+2. Backend Setup (Flask API)
+```bash
+# Create virtual environment
+python -m venv venv
+
+# Activate environment
+# Windows
+venv\Scripts\activate
+# macOS/Linux
+source venv/bin/activate
+
+# Install dependencies
+pip install -r backend/requirements.txt
+
+# Run the Flask server
+cd backend
+
+python app.py
+
+Server runs at http://127.0.0.1:5000/
+```
+
+
+
+3. Frontend Setup (React + Vite)
+```bash
+cd frontend
+npm install
+npm run dev
+
+Frontend runs at the URL displayed in terminal (http://localhost:5173/)
+```
+4. API Endpoints: /predict and /report
