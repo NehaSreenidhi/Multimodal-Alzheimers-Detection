@@ -51,7 +51,8 @@ model = XGBClassifier(
     subsample=0.8,
     colsample_bytree=0.8,
     eval_metric="logloss",
-    scale_pos_weight=scale_pos_weight, 
+    scale_pos_weight=scale_pos_weight,
+    monotone_constraints=(0,0,0,0,0,0,1,0,0,1),
     use_label_encoder=False
 )
 model.fit(X_train_scaled, y_train)
