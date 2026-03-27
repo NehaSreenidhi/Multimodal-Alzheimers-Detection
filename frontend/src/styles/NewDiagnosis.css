@@ -219,13 +219,13 @@ body {
   margin-top: 32px;
 }
 
-.back-btn {
-  padding: 12px 22px;
+.back-btn1 {
+  padding: 18px 22px;
   background-color: #e2e8f0;
   border: none;
   border-radius: 12px;
   color: #334155;
-  font-size: 14px;
+  font-size: 15px;
   font-weight: 500;
   cursor: pointer;
 }

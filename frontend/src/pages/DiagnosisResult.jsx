@@ -130,11 +130,11 @@ export default function DiagnosisResult() {
           <div className="top-actions">
             
           <button
-            className="secondary-btn"
+            className="secondary-btn1"
             onClick={() => navigate("/")}>
           Home </button>
           <button
-            className="secondary-btn"
+            className="secondary-btn1"
             onClick={() => navigate("/take_details")}>
           New Diagnosis </button>
             
