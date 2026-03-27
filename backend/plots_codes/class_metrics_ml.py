@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 
 # File path
-report_file = "E:/MAJOR PROJECT/Multimodal Alzheimers Detection/backend/metrics/classification_report.txt"
+report_file = "E:/MAJOR PROJECT/Multimodal Alzheimers Detection/backend/metrics/ml_classification_report.txt"
 
 classes = []
 precision = []
