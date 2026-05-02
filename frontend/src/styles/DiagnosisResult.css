@@ -55,14 +55,15 @@
   display: inline-block;
 }
 
-.secondary-btn {
+.secondary-btn1 {
   background: #e5e7eb;
   color: #111827;
   border: none;
-  padding: 12px 22px;
+  padding: 12px 33px;
   border-radius: 12px;
   font-weight: 600;
   cursor: pointer;
+
 }
 
 /* ================= SUMMARY CARD ================= */

@@ -1,12 +1,16 @@
 import { useState } from "react";
 import uploadIcon from "../assets/upload.svg";
 import arrowRight from "../assets/arrow-right.svg";
-import "../styles/new_diagnosis.css";
+import "../styles/NewDiagnosis.css";
 import { predictDiagnosis } from "../services/api";
 import { useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
 export default function NewDiagnosis() {
   const navigate = useNavigate();
+
+  const location = useLocation();
+  const patientDetails = location.state?.patientDetails;
 
   const [step, setStep] = useState(1);
   const [mriFile, setMriFile] = useState(null);
@@ -21,9 +25,10 @@ export default function NewDiagnosis() {
     MemoryComplaints: "No",
     BehavioralProblems: "No",
     SleepQuality: 3,
-    BMI: 23,
+    Age: 23,
     CholesterolHDL: 55,
     CholesterolLDL: 120,
+    FamilyHistoryAlzheimers: "No"
   });
 
   const handleFileUpload = (e) => {
@@ -60,9 +65,6 @@ export default function NewDiagnosis() {
     if (formData.SleepQuality < 1 || formData.SleepQuality > 5)
       errors.push("Sleep Quality must be between 1 and 5");
 
-    if (formData.BMI < 10 || formData.BMI > 60)
-      errors.push("BMI must be between 10 and 60");
-
     if (formData.CholesterolHDL < 10 || formData.CholesterolHDL > 120)
       errors.push("HDL must be between 10 and 120 mg/dL");
 
@@ -72,7 +74,7 @@ export default function NewDiagnosis() {
     return errors;
   };
 
-  // ✅ ACTUAL SUBMIT
+  // ACTUAL SUBMIT
   const handleSubmit = async () => {
   try {
     const errors = validateInputs();
@@ -83,21 +85,22 @@ export default function NewDiagnosis() {
     }
 
     setLoading(true);
-    // ✅ CREATE PAYLOAD
+    // CREATE PAYLOAD
     const payload = new FormData();
     payload.append("mri", mriFile);
     payload.append("data", JSON.stringify(formData));
 
-    // ✅ CALL BACKEND
+    // CALL BACKEND
     const result = await predictDiagnosis(payload);
 
     console.log("Backend result:", result);
 
-    // ✅ NAVIGATE WITH STATE
+    // NAVIGATE WITH STATE
     navigate("/diagnosis_result", {
       state: {
         prediction: result,
-        clinicalInputs: formData
+        clinicalInputs: formData, 
+        patientDetails
       }
     });
 
@@ -144,7 +147,7 @@ export default function NewDiagnosis() {
         <div className="step-actions">
   <button
     className="secondary-btn"
-    onClick={() => navigate("/")}
+    onClick={() => navigate("/take_details")}
   >
     Back
   </button>
@@ -180,13 +183,14 @@ export default function NewDiagnosis() {
 
           <h3>Metabolic & Clinical Factors</h3>
           <div className="grid">
-            <Input label="BMI" value={formData.BMI} onChange={(v) => handleChange("BMI", v)} />
+            <Input label="Age" value={formData.Age} onChange={(v) => handleChange("Age", v)} />
             <Input label="Cholesterol HDL (mg/dL)" value={formData.CholesterolHDL} onChange={(v) => handleChange("CholesterolHDL", v)} />
             <Input label="Cholesterol LDL (mg/dL)" value={formData.CholesterolLDL} onChange={(v) => handleChange("CholesterolLDL", v)} />
+            <Select label="Family History Alzheimers" value={formData.FamilyHistoryAlzheimers} onChange={(v) => handleChange("FamilyHistoryAlzheimers", v)} />
           </div>
 
           <div className="footer-buttons">
-            <button className="back-btn" onClick={() => setStep(1)}>Back</button>
+            <button className="back-btn1" onClick={() => setStep(1)}>Back</button>
             <button className="generate-btn" onClick={handleSubmit} disabled={loading}>
               {loading ? <span className="spinner" /> : "Generate Diagnosis"}
             </button>

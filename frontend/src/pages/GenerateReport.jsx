@@ -7,24 +7,19 @@ export default function GenerateReport() {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const { prediction, clinicalInputs } = location.state || {};
-
-  const [formData, setFormData] = React.useState({
-    patient_name: "",
-    age: "",
-    gender: "",
-    mobile_number:""
-  });
+  console.log("STATE:", location.state);
+  const { prediction, clinicalInputs, patientDetails } = location.state || {};
 
   const [reportHtml, setReportHtml] = React.useState(null);
-  const [loading, setLoading] = React.useState(false);
+  const [loading, setLoading] = React.useState(true);
 
-  if (!prediction || !clinicalInputs) {
+  
+  if (!prediction || !clinicalInputs || !patientDetails) {
     return (
       <div className="report-page">
         <div className="report-card">
-          <h2>No data available</h2>
-          <button onClick={() => navigate("/")}>
+          <h2>No report data available</h2>
+          <button className="primary-btn" onClick={() => navigate("/")}>
             Go Home
           </button>
         </div>
@@ -32,19 +27,41 @@ export default function GenerateReport() {
     );
   }
 
-  const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
-    });
-  };
+  /* AUTO GENERATE REPORT ON LOAD */
+  React.useEffect(() => {
+    const generateReport = async () => {
+      try {
+        const response = await fetch("http://localhost:5000/report", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            patient_info: patientDetails,
+            model_results: prediction,
+            clinical_inputs: clinicalInputs
+          })
+        });
 
+        const data = await response.json();
+        setReportHtml(data.html_content);
+      } catch (error) {
+        console.error("Report generation failed:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    generateReport();
+  }, []);
+
+  /* ✅ DOWNLOAD PDF */
   const handleDownload = () => {
     const element = document.getElementById("report-content");
 
     const opt = {
       margin: 0.5,
-      filename: `${formData.patient_name}_Report.pdf`,
+      filename: `${patientDetails.patient_name}_Report.pdf`,
       image: { type: "jpeg", quality: 0.98 },
       html2canvas: { scale: 2 },
       jsPDF: { unit: "in", format: "a4", orientation: "portrait" }
@@ -53,101 +70,42 @@ export default function GenerateReport() {
     html2pdf().set(opt).from(element).save();
   };
 
-  const handleGenerate = async () => {
-    if (!formData.patient_name || !formData.age || !formData.gender) {
-      alert("Please fill all required fields.");
-      return;
-    }
-    setLoading(true);
-
-    const response = await fetch("http://localhost:5000/report", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        patient_info: formData,
-        model_results: prediction,
-        clinical_inputs: clinicalInputs
-      })
-    });
-
-    const data = await response.json();
-    setReportHtml(data.html_content);
-    setLoading(false);
-  };
-
   return (
     <div className="report-page">
       <div className="report-card">
 
-        {!reportHtml && <h2>Generate Diagnostic Report</h2>}
+        <h2>Diagnostic Report</h2>
 
-        {/* Form Section */}
-        {!reportHtml && (
-          <div className="report-form">
-            <input
-              type="text"
-              name="patient_name"
-              placeholder="Patient Name"
-              onChange={handleChange}
-            />
+        {/* Loading */}
+        {loading && <p className="loading-text">Generating report...</p>}
 
-            <input
-              type="number"
-              name="age"
-              placeholder="Age"
-              onChange={handleChange}
-            />
+        {/* Preview */}
+        {!loading && reportHtml && (
+          <div className="report-preview">
 
-            <select
-              name="gender"
-              onChange={handleChange}
-            >
-              <option value="">Select Gender</option>
-              <option>Male</option>
-              <option>Female</option>
-              <option>Other</option>
-            </select>
+            <div id="report-content">
+              <div dangerouslySetInnerHTML={{ __html: reportHtml }} />
+            </div>
 
-            <input 
-              type="tel"
-              name="mobile_number"
-              placeholder="Mobile Number"
-              onChange={handleChange}
-            />
+            <div className="button-group">
+              <button
+                className="secondary-btn"
+                onClick={() => navigate(-1)}
+              >
+                Back
+              </button>
 
-            <button
-              className="primary-btn"
-              onClick={handleGenerate}
-              disabled={loading}
-            >
-              {loading ? "Generating Report..." : "Generate Report Preview"}
-            </button>
+              <button
+                className="primary-btn"
+                onClick={handleDownload}
+              >
+                Download PDF
+              </button>
+            </div>
+
           </div>
         )}
 
-        {/* Preview Section */}
-        {reportHtml && (
-        <div className="report-preview">
-
-          {/* ONLY THIS PART WILL BE CONVERTED TO PDF */}
-          <div id="report-content">
-            <div
-              dangerouslySetInnerHTML={{ __html: reportHtml }}
-            />
-          </div>
-
-          {/* Button will NOT be included in PDF */}
-          <button 
-            className="primary-btn"
-            onClick={handleDownload}
-          >
-            Download PDF
-          </button>
-
-        </div>
-      )}
       </div>
     </div>
   );

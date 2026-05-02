@@ -219,19 +219,19 @@ body {
   margin-top: 32px;
 }
 
-.back-btn {
-  padding: 12px 22px;
+.back-btn1 {
+  padding: 18px 22px;
   background-color: #e2e8f0;
   border: none;
   border-radius: 12px;
   color: #334155;
-  font-size: 14px;
+  font-size: 15px;
   font-weight: 500;
   cursor: pointer;
 }
 
 .generate-btn {
-  padding: 14px 30px;
+  padding: 12px 22px;
   background: linear-gradient(90deg, #2563eb, #6366f1);
   border: none;
   border-radius: 12px;

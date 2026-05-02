@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 
 # File path
-report_file = "E:/MAJOR PROJECT/Multimodal Alzheimers Detection/backend/metrics/classification_report.txt"
+report_file = "E:/MAJOR PROJECT/Multimodal Alzheimers Detection/backend/metrics/ml_classification_report.txt"
 
 classes = []
 precision = []
@@ -44,5 +44,5 @@ plt.ylim(0,1)
 plt.xticks(rotation=0)
 plt.tight_layout()
 
-plt.savefig("metrics/ml_class_metrics.png", dpi=300)
+plt.savefig("metrics/plots/ml_class_metrics.png", dpi=300)
 plt.show()
